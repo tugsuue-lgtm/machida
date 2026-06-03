@@ -10,6 +10,7 @@
 :root{--bg:#f4f1ed;--sur:#fff;--bdr:#e2d9d0;--txt:#1a1512;--mut:#8a8078;--acc:#c84b2f;--al:#fdf0ed;--blu:#2563eb;--grn:#16a34a;--pur:#7c3aed;--nh:60px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh;padding-bottom:var(--nh)}
+#floatHam.show{display:flex!important}
 #LS{position:fixed;inset:0;background:var(--txt);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .app-title{font-family:Georgia,serif;font-size:26px;color:#fff;margin-bottom:4px}
 .app-sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.15em;margin-bottom:28px}
@@ -258,7 +259,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
   <div class="wvm"><button class="wvnb" onclick="wvc(-1)">←</button><div class="wvlbl" id="wvLbl"></div><button class="wvnb" onclick="wvc(1)">→</button></div>
   <div class="wvdays" id="wvDays"></div>
 </div>
-<div id="APP" style="display:none">
+<div id="APP" style="display:none" data-ready="1">
 <div class="pg on" id="calPage">
   <div class="hdr"><div><h1 id="hCal">Хуваарь</h1><div class="hsub" id="hCalSub"></div></div>
     <div class="hr"><button class="cnb" onclick="cm(-1)">←</button><div class="clbl" id="calLbl"></div><button class="cnb" onclick="cm(1)">→</button></div>
@@ -642,6 +643,25 @@ window.fbOnAuth(async function(user) {
 //   }
 // }
 // ═══ END RULES ═══
+</script>
+<script>
+// Show/hide hamburger based on APP visibility
+var _hamObs = new MutationObserver(function(){
+  var app = document.getElementById('APP');
+  var ham = document.getElementById('floatHam');
+  if(!app || !ham) return;
+  if(app.style.display !== 'none') {
+    // Check if admin
+    var isAdm = document.querySelector('.nb') && 
+                document.querySelector('.nb[id="nb_dash"]') && 
+                !document.querySelector('.nb[id="nb_cal"]');
+    ham.style.display = isAdm ? 'none' : 'flex';
+  } else {
+    ham.style.display = 'none';
+  }
+});
+var _appEl = document.getElementById('APP');
+if(_appEl) _hamObs.observe(_appEl, {attributes:true, attributeFilter:['style']});
 </script>
 </body>
 </html>
