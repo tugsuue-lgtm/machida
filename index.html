@@ -239,11 +239,10 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
   <div class="app-sub">// schedule manager</div>
   <div class="ls-box">
     <div class="ls-lbl" id="lsMode">Нэвтрэх</div>
-    <input class="ls-in" id="lsU" type="text" placeholder="Хэрэглэгчийн нэр" autocomplete="username" autocorrect="off" spellcheck="false">
+    <input class="ls-in" id="lsU" type="email" placeholder="И-мэйл" autocomplete="email" autocorrect="off" spellcheck="false">
     <div style="position:relative"><input class="ls-in" id="lsP" type="password" placeholder="Нууц үг" autocomplete="current-password" style="padding-right:42px"><button type="button" onclick="togglePw('lsP',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:15px;line-height:1">👁</button></div>
     <div id="lsExtra" style="display:none;flex-direction:column;gap:10px">
       <div style="position:relative"><input class="ls-in" id="lsP2" type="password" placeholder="Нууц үг давтах" style="padding-right:42px"><button type="button" onclick="togglePw('lsP2',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:15px;line-height:1">👁</button></div>
-      <input class="ls-in" id="lsEmail" type="email" placeholder="Email">
       <input class="ls-in" id="lsPhone" type="tel" placeholder="Утасны дугаар">
     </div>
     <div id="lsForgotWrap" style="text-align:right"><button type="button" id="lsForgot" onclick="doForgotPw()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;font-family:inherit;text-decoration:underline">Нууц үг мартсан?</button></div>
