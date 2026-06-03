@@ -645,23 +645,23 @@ window.fbOnAuth(async function(user) {
 // ═══ END RULES ═══
 </script>
 <script>
-// Show/hide hamburger based on APP visibility
-var _hamObs = new MutationObserver(function(){
-  var app = document.getElementById('APP');
-  var ham = document.getElementById('floatHam');
-  if(!app || !ham) return;
-  if(app.style.display !== 'none') {
-    // Check if admin
-    var isAdm = document.querySelector('.nb') && 
-                document.querySelector('.nb[id="nb_dash"]') && 
-                !document.querySelector('.nb[id="nb_cal"]');
-    ham.style.display = isAdm ? 'none' : 'flex';
-  } else {
-    ham.style.display = 'none';
+// Show hamburger button when user logs in
+// Poll until APP is visible and nav is built
+(function(){
+  function checkHam(){
+    var app=document.getElementById('APP');
+    var ham=document.getElementById('floatHam');
+    if(!app||!ham)return;
+    if(app.style.display==='none'){ham.style.display='none';return;}
+    // Check nav - if nb_cal exists = regular user, if not = admin
+    var hasCalTab=!!document.getElementById('nb_cal');
+    ham.style.display=hasCalTab?'flex':'none';
   }
-});
-var _appEl = document.getElementById('APP');
-if(_appEl) _hamObs.observe(_appEl, {attributes:true, attributeFilter:['style']});
+  // Run every 500ms
+  setInterval(checkHam, 500);
+  // Also run on click (nav might change)
+  document.addEventListener('click', function(){setTimeout(checkHam,100)});
+})();
 </script>
 </body>
 </html>
