@@ -36,7 +36,7 @@ setTimeout(renameSetNav, 1500);
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh;padding-bottom:var(--nh)}
 #floatHam.show{display:flex!important}
-#LS{position:fixed;inset:0;background:#1A110A;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#LS{position:fixed;inset:0;background:#1A110A;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .app-title{font-family:'DM Serif Display',Georgia,serif;font-size:26px;color:#fff;margin-bottom:4px}
 .app-sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.15em;margin-bottom:28px}
 .ls-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
@@ -289,6 +289,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
   background:#1A110A;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:26px;padding:40px;
+  will-change:opacity;
 }
 #introScreen.hide{opacity:0;pointer-events:none}
 
@@ -355,7 +356,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 .nb-logo-sq.br-nb{animation:isq-br 1.6s ease-in-out infinite}
 </style>
 </head>
-<body style="opacity:0">
+<body>
 <script>
 // Prevent obfuscated _renderAdminWithProfiles from running
 window._renderAdminWithProfiles = function(){};
@@ -1533,9 +1534,6 @@ setTimeout(injectHamAllPages, 500);
   if(!intro) return;
   // Hide after bar fills
   // Auto-hide after 2.5s regardless
-  // Show body immediately (intro is on top)
-  document.body.style.opacity = '1';
-  
   var _introHidden = false;
   function hideIntro(){
     if(_introHidden) return;
@@ -1610,7 +1608,7 @@ setTimeout(renameSetNav, 1500);">
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh;padding-bottom:var(--nh)}
 #floatHam.show{display:flex!important}
-#LS{position:fixed;inset:0;background:#1A110A;z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#LS{position:fixed;inset:0;background:#1A110A;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
 .app-title{font-family:'DM Serif Display',Georgia,serif;font-size:26px;color:#fff;margin-bottom:4px}
 .app-sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.15em;margin-bottom:28px}
 .ls-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
