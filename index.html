@@ -233,9 +233,8 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .ham-line{width:16px;height:2px;background:#fff;border-radius:99px}
 
 /* CHAT */
-.chat-ovr{display:none;position:fixed;inset:0;background:rgba(26,22,18,.55);z-index:400;align-items:flex-end;justify-content:center}
-.chat-ovr.on{display:flex}
-.chat-box{background:var(--sur);border-radius:18px 18px 0 0;width:100%;max-width:540px;height:72vh;display:flex;flex-direction:column;animation:up .22s ease}
+.chat-ovr{display:none;position:fixed;inset:0;background:rgba(26,22,18,.55);z-index:400;align-items:flex-end;justify-content:center}.chat-ovr.on{display:flex}.chat-drag-handle{height:28px;cursor:ns-resize;display:flex;align-items:center;justify-content:center;margin:-14px 0 -4px;flex-shrink:0}.chat-drag-bar{width:40px;height:5px;background:rgba(255,255,255,.3);border-radius:99px}
+.chat-box{background:var(--sur);border-radius:18px 18px 0 0;width:100%;max-width:540px;height:72vh;display:flex;flex-direction:column;animation:up .22s ease;transition:height .15s ease}
 .chat-hdr{background:var(--txt);border-radius:18px 18px 0 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .chat-hdr-title{font-family:Georgia,serif;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px}
 .chat-close{width:28px;height:28px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:16px}
@@ -288,7 +287,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 </div>
 <div id="APP" style="display:none" data-ready="1">
 <div class="pg on" id="calPage">
-  <div class="hdr"><div><h1 id="hCal">Хуваарь</h1><div class="hsub" id="hCalSub"></div></div>
+  <div class="hdr" style="gap:10px"><button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div><h1 id="hCal">Хуваарь</h1><div class="hsub" id="hCalSub"></div></div>
     <div class="hr"><button class="cnb" onclick="cm(-1)">←</button><div class="clbl" id="calLbl"></div><button class="cnb" onclick="cm(1)">→</button></div>
   </div>
   <div class="cnt">
@@ -308,7 +307,8 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 </div>
 <!-- CHAT -->
 <div class="chat-ovr" id="chatOvr" onclick="if(event.target===this)closeChat()">
-  <div class="chat-box">
+  <div class="chat-box" id="chatBox">
+    <div class="chat-drag-handle" id="chatDragHandle"><div class="chat-drag-bar"></div></div>
     <div class="chat-hdr">
       <div class="chat-hdr-title">💬 <span id="chatTitle">Чат</span></div>
       <button class="chat-close" onclick="closeChat()">✕</button>
@@ -877,157 +877,95 @@ function openAdminChat(uid){
   _obs.observe(_app,{attributes:true,attributeFilter:['style']});
 })();
 
-// Inject hamburger button into nav for non-admin users
-function injectHamburger(){
-  var nav=document.getElementById('mainNav');
-  if(!nav||document.getElementById('nb_ham'))return;
-  // Only for non-admin (has nb_cal)
-  if(!document.getElementById('nb_cal'))return;
-  var btn=document.createElement('button');
-  btn.className='nb';btn.id='nb_ham';
-  btn.onclick=openSideMenu;
-  btn.innerHTML='<span class="ic">☰</span>'+(typeof lang!=='undefined'&&lang==='kr'?'메뉴':lang==='en'?'Menu':'Цэс');
-  nav.appendChild(btn);
+
+
+// Inject chat buttons into admin user list
+function injectAdminChatBtns(){
+  var rows=document.querySelectorAll('.au-row');
+  rows.forEach(function(row){
+    if(row.querySelector('.chat-inject-btn'))return;
+    // Find edit button to get uid
+    var editBtn=row.querySelector('.ib[onclick*="openAdmEdit"]');
+    if(!editBtn)return;
+    var onclick=editBtn.getAttribute('onclick');
+    var uid=onclick.replace(/.*openAdmEdit\('?([^')]+)'?\).*/,'$1');
+    if(!uid||uid===onclick)return;
+    var btn=document.createElement('button');
+    btn.className='ib chat-inject-btn';
+    btn.style.background='#16a34a';
+    btn.style.color='#fff';
+    btn.style.border='none';
+    btn.innerHTML='💬';
+    btn.onclick=function(){openAdminChat(uid)};
+    editBtn.parentNode.insertBefore(btn,editBtn);
+  });
 }
 
-// Watch nav for changes
+// Watch adminCnt for changes
 (function(){
-  var nav=document.getElementById('mainNav');
-  if(!nav)return;
-  var obs=new MutationObserver(function(){injectHamburger()});
-  obs.observe(nav,{childList:true});
-  // Also try immediately
-  setTimeout(injectHamburger,300);
-  setTimeout(injectHamburger,1000);
-  setTimeout(injectHamburger,2000);
+  var cnt=document.getElementById('adminCnt');
+  if(!cnt)return;
+  var obs=new MutationObserver(function(){
+    setTimeout(injectAdminChatBtns,100);
+  });
+  obs.observe(cnt,{childList:true,subtree:true});
 })();
+
+// ═══ CHAT DRAG (дээш доош хөдөлгөх) ═══
+(function(){
+  var startY=0, startH=0, dragging=false;
+  var minH=200, maxH=window.innerHeight*0.92;
+
+  function onStart(e){
+    var box=document.getElementById('chatBox');
+    if(!box)return;
+    dragging=true;
+    startY=e.touches?e.touches[0].clientY:e.clientY;
+    startH=box.offsetHeight;
+    box.style.transition='none';
+    e.preventDefault();
+  }
+  function onMove(e){
+    if(!dragging)return;
+    var box=document.getElementById('chatBox');
+    if(!box)return;
+    var y=e.touches?e.touches[0].clientY:e.clientY;
+    var delta=startY-y; // drag up = increase height
+    var newH=Math.min(Math.max(startH+delta, minH), window.innerHeight*0.92);
+    box.style.height=newH+'px';
+    e.preventDefault();
+  }
+  function onEnd(){
+    if(!dragging)return;
+    dragging=false;
+    var box=document.getElementById('chatBox');
+    if(box)box.style.transition='height .15s ease';
+  }
+
+  // Attach to drag handle
+  function attachDrag(){
+    var handle=document.getElementById('chatDragHandle');
+    if(!handle||handle._dragAttached)return;
+    handle._dragAttached=true;
+    handle.addEventListener('touchstart',onStart,{passive:false});
+    handle.addEventListener('mousedown',onStart);
+  }
+  document.addEventListener('touchmove',onMove,{passive:false});
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('touchend',onEnd);
+  document.addEventListener('mouseup',onEnd);
+
+  // Attach when chat opens
+  var origOpen=window.openChat;
+  if(origOpen){
+    window.openChat=function(uid){
+      origOpen(uid);
+      setTimeout(attachDrag,100);
+    };
+  }
+  setTimeout(attachDrag,500);
+})();
+
 </script>
 </body>
 </html>
-// ═══ CHAT SYSTEM ═══
-var chatUserId=null, chatUnsub=null, chatIsAdmin=false;
-
-function openChat(userId){
-  chatIsAdmin=isAdmin();
-  chatUserId=userId||(cu?cu.uid:null);
-  if(!chatUserId)return;
-  var title=chatIsAdmin?(userId?_getUsername(userId):"Чат"):"Admin";
-  sx("chatTitle","💬 "+title);
-  g("chatOvr").classList.add("on");
-  loadChatMsgs();
-  // Mark as read
-  if(window.fbMarkRead)window.fbMarkRead(chatUserId,chatIsAdmin);
-  // Listen realtime
-  startChatListen();
-  // Focus input
-  setTimeout(function(){var inp=g("chatIn");if(inp)inp.focus()},300);
-}
-function _getUsername(uid){
-  // Try to find username from admin profiles cache
-  return uid;
-}
-function closeChat(){
-  g("chatOvr").classList.remove("on");
-  if(chatUnsub){try{chatUnsub()}catch(e){}chatUnsub=null;}
-}
-function loadChatMsgs(){
-  if(!window.fbLoadMsgs||!chatUserId)return;
-  g("chatMsgs").innerHTML='<div class="chat-empty">'+(lang==="kr"?"로딩 중...":lang==="en"?"Loading...":"Ачаалж байна...")+'</div>';
-  window.fbLoadMsgs(chatUserId).then(function(msgs){
-    renderMsgs(msgs);
-  });
-}
-function startChatListen(){
-  if(chatUnsub){try{chatUnsub()}catch(e){}}
-  if(!window.fbListenMsgs||!window._fbImports||!chatUserId)return;
-  var FB=window._fbImports;
-  try{
-    var q=FB.query(FB.collection(window._fbDb||window.fbDb,"chats",chatUserId,"messages"),FB.orderBy("ts","asc"));
-    chatUnsub=FB.onSnapshot(q,function(snap){
-      var msgs=snap.docs.map(function(d){return Object.assign({id:d.id},d.data())});
-      renderMsgs(msgs);
-      if(window.fbMarkRead)window.fbMarkRead(chatUserId,chatIsAdmin);
-    });
-  }catch(e){console.warn("listen:",e)}
-}
-function renderMsgs(msgs){
-  var el=g("chatMsgs");if(!el)return;
-  if(!msgs.length){el.innerHTML='<div class="chat-empty">💬 '+(lang==="kr"?"메시지 없음":lang==="en"?"No messages yet":"Мессеж байхгүй")+'</div>';return}
-  var h="";
-  for(var i=0;i<msgs.length;i++){
-    var m=msgs[i];
-    var isMe=chatIsAdmin?m.fromAdmin:!m.fromAdmin;
-    var t=m.ts&&m.ts.toDate?m.ts.toDate():new Date(m.ts||Date.now());
-    var tstr=pad(t.getHours())+":"+pad(t.getMinutes());
-    h+='<div class="msg-wrap'+(isMe?" me":"")+'">'
-      +'<div class="msg '+(isMe?"msg-user":"msg-admin")+'">'+esc(m.text)+'</div>'
-      +'<div class="msg-time">'+tstr+(m.read&&isMe?" ✓✓":"")+'</div>'
-      +'</div>';
-  }
-  el.innerHTML=h;
-  el.scrollTop=el.scrollHeight;
-}
-function sendMsg(){
-  var inp=g("chatIn");if(!inp)return;
-  var txt=inp.value.trim();if(!txt||!chatUserId)return;
-  inp.value="";
-  if(!window.fbSendMsg){toast("Firebase not ready");return}
-  window.fbSendMsg(chatUserId,txt,chatIsAdmin).then(function(){
-    // FCM notification
-    if(chatIsAdmin){
-      sendPushToUser(chatUserId,txt);
-    }
-  }).catch(function(e){toast("❌ "+e.message)});
-}
-
-// FCM push notification to user
-function sendPushToUser(uid, text){
-  // We need server-side for actual FCM push
-  // For now just save a notification to Firestore
-  if(!window.fbSaveProfile)return;
-  // Save pending notification
-  window.fbSaveProfile(uid,{pendingNotif:{text:"Admin: "+text,ts:Date.now()}});
-}
-
-// Check unread messages periodically
-var _chatCheckInterval=null;
-function startUnreadCheck(){
-  if(_chatCheckInterval)clearInterval(_chatCheckInterval);
-  if(!cu||isAdmin())return;
-  // Check on load
-  checkUnread();
-  _chatCheckInterval=setInterval(checkUnread,30000);
-}
-function checkUnread(){
-  if(!window.fbUnreadCount||!cu)return;
-  window.fbUnreadCount(cu.uid,true).then(function(n){
-    var badge=g("chatBadge");
-    if(badge){badge.textContent=n;badge.style.display=n>0?"flex":"none"}
-  }).catch(function(){});
-}
-
-// Show/hide chat FAB for users
-function updateChatFab(){
-  var wrap=g("chatFabWrap");
-  if(!wrap)return;
-  if(cu&&!isAdmin()){
-    wrap.classList.add("show");
-    startUnreadCheck();
-    // Init FCM
-    if(window.fbInitFCM)window.fbInitFCM(cu.uid).catch(function(){});
-  } else {
-    wrap.classList.remove("show");
-  }
-}
-
-// Admin: open chat with specific user
-function openAdminChat(uid){
-  openChat(uid);
-  // Load username
-  if(window.fbLoadProfile){
-    window.fbLoadProfile(uid).then(function(p){
-      if(p)sx("chatTitle","💬 "+(p.username||p.email||uid));
-    });
-  }
-}
-
