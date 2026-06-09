@@ -1,3 +1,25 @@
+  h+='<div class="ss">'
+    +'<div class="sh"><div class="sht">👥 '+T("usersT")+' <span style="font-size:11px;color:var(--mut)">('+list.length+')</span></div>'
+    +'<button class="btn br bs" id="btnAdmAdd" onclick="openAdmUser()">'+T("addItem")+'</button>'
+    +'</div>'
+    +'<div class="admin-search">'function renameSetNav(){
+  var allBtns = document.querySelectorAll('.nb, .bnav button, [id^="nb_"]');
+  allBtns.forEach(function(nb){
+    function walk(node){
+      if(node.nodeType===3){
+        if(node.textContent.includes('Тохиргоо')) node.textContent=node.textContent.replace(/Тохиргоо/g,'Цэс');
+        if(node.textContent.includes('설정')) node.textContent=node.textContent.replace(/설정/g,'메뉴');
+        if(node.textContent.includes('Settings')) node.textContent=node.textContent.replace(/Settings/g,'Menu');
+      }
+      node.childNodes.forEach(walk);
+    }
+    walk(nb);
+  });
+}
+setInterval(renameSetNav, 500);
+setTimeout(renameSetNav, 200);
+setTimeout(renameSetNav, 800);
+setTimeout(renameSetNav, 1500);
 <!DOCTYPE html>
 <html lang="mn">
 <head>
@@ -1488,12 +1510,15 @@ function injectHamAllPages(){
     if(!pg) return;
     var hdr = pg.querySelector('.hdr');
     if(!hdr) return;
-    // Check if ham already there
     if(hdr.querySelector('.ham-btn-inject')) return;
     var btn = document.createElement('button');
     btn.className = 'ham-btn ham-btn-inject';
     btn.onclick = function(){ if(typeof openSideMenu==='function') openSideMenu(); };
     btn.innerHTML = '<div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div>';
+    btn.style.cssText = 'flex-shrink:0;margin-right:4px';
+    hdr.insertBefore(btn, hdr.firstChild);
+  });
+}lass="ham-line"></div>';
     btn.style.cssText = 'flex-shrink:0;margin-right:4px';
     hdr.insertBefore(btn, hdr.firstChild);
   });
