@@ -637,6 +637,10 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 .nb-logo-sq.tr-nb{animation:isq-tr 1.6s ease-in-out infinite}
 .nb-logo-sq.bl-nb{animation:isq-bl 1.6s ease-in-out infinite}
 .nb-logo-sq.br-nb{animation:isq-br 1.6s ease-in-out infinite}
+
+/* Hide duplicate search bar from obfuscated renderAdmin */
+#adminCnt > .admin-search { display: none !important; }
+#adminCnt > input[type="text"] { display: none !important; }
 </style>
 </style>
 </head>
@@ -787,12 +791,12 @@ setInterval(_patchTX, 100);
     <div class="shr-sec"><div class="shr-hdr" id="shrHdr">🔗 Хуваарийн холбоос</div><div id="shrList"></div></div>
   </div>
 </div>
-<div class="pg" id="dashPage"><div class="hdr"><div><h1 id="hDash">Дашбоард</h1><div class="hsub" id="hDashSub">СТАТИСТИК</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="dashCnt"></div></div>
+<div class="pg" id="dashPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hDash">Дашбоард</h1><div class="hsub" id="hDashSub">СТАТИСТИК</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="dashCnt"></div></div>
 <div class="pg" id="setPage"><div class="hdr"><div><h1 id="hSet">Цэс</h1><div class="hsub" id="hSetSub">АЖИЛ ОЛГОГЧ · АЖИЛЧИД</div></div><div style="display:flex;align-items:center;gap:6px"></div></div>
   <div class="cnt" id="setCnt"></div>
 </div>
-<div class="pg" id="adminPage"><div class="hdr"><div><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
-<div class="pg" id="adminSetPage"><div class="hdr"><div><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
+<div class="pg" id="adminPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
+<div class="pg" id="adminSetPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
 <nav class="bnav" id="mainNav"></nav>
 </div>
 <!-- CHAT -->
@@ -1800,8 +1804,7 @@ function injectHamAllPages(){
     hdr.insertBefore(btn, hdr.firstChild);
   });
 }
-setInterval(injectHamAllPages, 1000);
-setTimeout(injectHamAllPages, 500);
+// Burger buttons added directly in HTML
 
 
 // ═══ INTRO SCREEN ═══
@@ -1866,10 +1869,19 @@ function renameSetNav(){
     walk(nb);
   });
 }
-setInterval(renameSetNav, 500);
-setTimeout(renameSetNav, 200);
+setInterval(renameSetNav, 300);
+setTimeout(renameSetNav, 100);
+setTimeout(renameSetNav, 400);
 setTimeout(renameSetNav, 800);
 setTimeout(renameSetNav, 1500);
+setTimeout(renameSetNav, 3000);
+// Also watch nav for changes
+(function(){
+  var nav = document.getElementById('nb') || document.querySelector('.bnav');
+  if(!nav) return;
+  var obs = new MutationObserver(function(){ renameSetNav(); });
+  obs.observe(nav, {childList:true, subtree:true, characterData:true});
+})();
 </script>
 </body>
 </html>
