@@ -633,7 +633,7 @@ setInterval(_patchTX, 100);
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
+
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -648,13 +648,7 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 
 // App Check - зөвхөн tugsuue-lgtm.github.io домайнаас л хандаж болно
-// Only init App Check on production domain
-const appCheck = (location.hostname.includes('github.io') || location.hostname.includes('machida')) 
-  ? initializeAppCheck(fbApp, {
-      provider: new ReCaptchaV3Provider('6LcPQgotAAAAALWyZHqAjKOmI4zGxWADqrKbV_Yo'),
-      isTokenAutoRefreshEnabled: true
-    })
-  : null;
+// App Check disabled
 
 const fbAuth = getAuth(fbApp);
 const fbDb = getFirestore(fbApp);
@@ -1542,8 +1536,16 @@ setTimeout(injectHamAllPages, 500);
     intro.style.opacity = '0';
     setTimeout(function(){
       intro.style.display = 'none';
+      // Show LS only if APP is not visible (not logged in)
+      var app = document.getElementById('APP');
       var ls = document.getElementById('LS');
-      if(ls){ ls.style.display='flex'; }
+      if(app && app.style.display !== 'none') return; // Already logged in
+      if(ls){ 
+        ls.style.display='flex';
+        ls.style.opacity='1';
+        ls.style.visibility='visible';
+        ls.style.zIndex='1000';
+      }
     }, 420);
   }
   setTimeout(hideIntro, 2500);
@@ -1925,53 +1927,6 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 .nb-logo-sq.tr-nb{animation:isq-tr 1.6s ease-in-out infinite}
 .nb-logo-sq.bl-nb{animation:isq-bl 1.6s ease-in-out infinite}
 .nb-logo-sq.br-nb{animation:isq-br 1.6s ease-in-out infinite}
-</style>
-</head>
-<body>
-<script>
-// Prevent obfuscated _renderAdminWithProfiles from running
-window._renderAdminWithProfiles = function(){};
-// Fix lsU placeholder after applyLang runs
-var _origApplyLang = null;
-function _fixLsUPlaceholder(){
-  var el = document.getElementById('lsU');
-  if(el) el.placeholder = (typeof lang!=='undefined'&&lang==='kr')?'이메일':(typeof lang!=='undefined'&&lang==='en')?'Email':'И-мэйл';
-}
-setInterval(_fixLsUPlaceholder, 500);
-// Override TX to rename nav items
-var _txPatchDone = false;
-function _patchTX(){
-  if(_txPatchDone) return;
-  if(typeof TX === 'undefined') return;
-  _txPatchDone = true;
-  if(TX.mn) TX.mn.set = '☰ Цэс';
-  if(TX.kr) TX.kr.set = '☰ 메뉴';
-  if(TX.en) TX.en.set = '☰ Menu';
-}
-setInterval(_patchTX, 100);
-
-// Add export/import to admin settings page
-var _adminProfiles = {};
-function addBackupToSet(){
-  var cnt = document.getElementById('adminSetCnt') || document.getElementById('setCnt');
-  if(!cnt || cnt._backupAdded) return;
-  if(typeof isAdmin==='function' && !isAdmin()) return;
-  cnt._backupAdded = true;
-  var div = document.createElement('div');
-  div.className = 'ss';
-  div.innerHTML = '<div class="sh"><div class="sht">🔒 '+(lang==='kr'?'백업 & 복원':lang==='en'?'Backup & Restore':'Нөөцлөлт & Сэргээлт')+'</div></div>'
-    + '<div style="padding:11px;display:flex;flex-direction:column;gap:8px">'
-    + '<div style="font-size:12px;color:var(--mut);line-height:1.6">'+(lang==='kr'?'모든 사용자 데이터를 하나의 파일에 저장합니다':lang==='en'?'Save all user data to one file':'Бүх хэрэглэгчийн өгөгдлийг нэг файлд хадгална')+'</div>'
-    + '<div style="display:flex;gap:8px">'
-    + '<button class="btn br bs" style="flex:1;justify-content:center" onclick="adminExport()">📤 '+(lang==='kr'?'백업':lang==='en'?'Backup':'Нөөцлөх')+'</button>'
-    + '<label class="btn bo bs" style="flex:1;justify-content:center;cursor:pointer">📥 '+(lang==='kr'?'복원':lang==='en'?'Restore':'Сэргээх')+'<input type="file" accept=".json" style="display:none" onchange="adminImport(this)"></label>'
-    + '</div></div>';
-  cnt.insertBefore(div, cnt.firstChild);
-}
-setInterval(addBackupToSet, 800);
-setTimeout(addBackupToSet, 300);
-setTimeout(addBackupToSet, 1000);
-
 </script>
 </body>
 </html>
