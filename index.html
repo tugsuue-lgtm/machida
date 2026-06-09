@@ -337,6 +337,13 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 <script>
 // Prevent obfuscated _renderAdminWithProfiles from running
 window._renderAdminWithProfiles = function(){};
+// Fix lsU placeholder after applyLang runs
+var _origApplyLang = null;
+function _fixLsUPlaceholder(){
+  var el = document.getElementById('lsU');
+  if(el) el.placeholder = (typeof lang!=='undefined'&&lang==='kr')?'이메일':(typeof lang!=='undefined'&&lang==='en')?'Email':'И-мэйл';
+}
+setInterval(_fixLsUPlaceholder, 500);
 // Override TX to rename nav items
 var _txPatchDone = false;
 function _patchTX(){
@@ -444,10 +451,7 @@ setInterval(_patchTX, 100);
       </div>
     </div>
 
-    <!-- Contact -->
-    <div id="lsContact" style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(245,239,230,.07);width:100%;max-width:320px;text-align:center;z-index:1">
-      <div id="lsCfgContact" style="font-size:10px;color:rgba(245,239,230,.25);line-height:2.2">📱 WhatsApp: 88841011<br>✉️ machida.admin@gmail.com</div>
-    </div>
+    
 
   </div>
 </div>
@@ -1458,18 +1462,16 @@ function injectHamAllPages(){
   var pages = ['dashPage','setPage','adminPage','adminSetPage'];
   pages.forEach(function(pid){
     var pg = document.getElementById(pid);
-    if(!pg || pg._hamDone) return;
+    if(!pg) return;
     var hdr = pg.querySelector('.hdr');
     if(!hdr) return;
     // Check if ham already there
     if(hdr.querySelector('.ham-btn-inject')) return;
-    pg._hamDone = true;
     var btn = document.createElement('button');
     btn.className = 'ham-btn ham-btn-inject';
-    btn.onclick = openSideMenu;
+    btn.onclick = function(){ if(typeof openSideMenu==='function') openSideMenu(); };
     btn.innerHTML = '<div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div>';
-    btn.style.cssText = 'margin-left:8px;flex-shrink:0';
-    // Insert at beginning of hdr (left side)
+    btn.style.cssText = 'flex-shrink:0;margin-right:4px';
     hdr.insertBefore(btn, hdr.firstChild);
   });
 }
@@ -1565,8 +1567,9 @@ function addBackupToSet(){
     + '</div></div>';
   cnt.insertBefore(div, cnt.firstChild);
 }
-setInterval(addBackupToSet, 1000);
-setTimeout(addBackupToSet, 500);
+setInterval(addBackupToSet, 800);
+setTimeout(addBackupToSet, 300);
+setTimeout(addBackupToSet, 1000);
 
 
 </script>
