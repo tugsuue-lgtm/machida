@@ -415,9 +415,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
   <div class="drag"></div><h2 id="mVUT">Хэрэглэгч</h2><div id="viewUserBody"></div>
   <div class="mact"><button class="btn bo" onclick="co('oViewUser')" style="width:100%;justify-content:center">Хаах</button></div>
 </div></div>
-<button id="floatHam" onclick="openSideMenu()" style="position:fixed;bottom:calc(var(--nh) + 14px);right:16px;width:46px;height:46px;border-radius:50%;background:var(--txt);border:none;cursor:pointer;display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:99">
-  <div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div>
-</button>
+
 <div id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" onerror=""></script>
@@ -877,6 +875,31 @@ function openAdminChat(uid){
     }
   });
   _obs.observe(_app,{attributes:true,attributeFilter:['style']});
+})();
+
+// Inject hamburger button into nav for non-admin users
+function injectHamburger(){
+  var nav=document.getElementById('mainNav');
+  if(!nav||document.getElementById('nb_ham'))return;
+  // Only for non-admin (has nb_cal)
+  if(!document.getElementById('nb_cal'))return;
+  var btn=document.createElement('button');
+  btn.className='nb';btn.id='nb_ham';
+  btn.onclick=openSideMenu;
+  btn.innerHTML='<span class="ic">☰</span>'+(typeof lang!=='undefined'&&lang==='kr'?'메뉴':lang==='en'?'Menu':'Цэс');
+  nav.appendChild(btn);
+}
+
+// Watch nav for changes
+(function(){
+  var nav=document.getElementById('mainNav');
+  if(!nav)return;
+  var obs=new MutationObserver(function(){injectHamburger()});
+  obs.observe(nav,{childList:true});
+  // Also try immediately
+  setTimeout(injectHamburger,300);
+  setTimeout(injectHamburger,1000);
+  setTimeout(injectHamburger,2000);
 })();
 </script>
 </body>
