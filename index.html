@@ -267,9 +267,8 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
   background:#1A110A;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:26px;padding:40px;
-  transition:opacity .5s ease,transform .5s ease;
 }
-#introScreen.hide{opacity:0;transform:scale(1.04);pointer-events:none}
+#introScreen.hide{opacity:0;pointer-events:none}
 
 /* Background radial glow */
 .intro-bg-glow{
@@ -1486,15 +1485,22 @@ setTimeout(injectHamAllPages, 500);
   var intro = document.getElementById('introScreen');
   if(!intro) return;
   // Hide after bar fills
-  setTimeout(function(){
-    intro.classList.add('hide');
+  // Auto-hide after 2.5s regardless
+  var _introHidden = false;
+  function hideIntro(){
+    if(_introHidden) return;
+    _introHidden = true;
+    intro.style.transition = 'opacity .4s ease';
+    intro.style.opacity = '0';
     setTimeout(function(){
       intro.style.display = 'none';
-      // Force LS visible
       var ls = document.getElementById('LS');
-      if(ls) ls.style.display = 'flex';
-    }, 550);
-  }, 2800);
+      if(ls){ ls.style.display='flex'; ls.style.opacity='1'; }
+    }, 420);
+  }
+  setTimeout(hideIntro, 2500);
+  // Also hide when login form is needed
+  window._hideIntro = hideIntro;
 })();
 
 // Replace calendar tab icon with animated logo
