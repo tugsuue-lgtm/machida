@@ -2,6 +2,9 @@
 <html lang="mn">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1a1512">
@@ -9,10 +12,10 @@
 <style>
 :root{--bg:#f4f1ed;--sur:#fff;--bdr:#e2d9d0;--txt:#1a1512;--mut:#8a8078;--acc:#c84b2f;--al:#fdf0ed;--blu:#2563eb;--grn:#16a34a;--pur:#7c3aed;--nh:60px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh;padding-bottom:var(--nh)}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh;padding-bottom:var(--nh)}
 #floatHam.show{display:flex!important}
 #LS{position:fixed;inset:0;background:var(--txt);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
-.app-title{font-family:Georgia,serif;font-size:26px;color:#fff;margin-bottom:4px}
+.app-title{font-family:'DM Serif Display',Georgia,serif;font-size:26px;color:#fff;margin-bottom:4px}
 .app-sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.15em;margin-bottom:28px}
 .ls-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
 .ls-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase}
@@ -25,18 +28,18 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .lang-row{display:flex;gap:6px;justify-content:center}
 .lb{padding:4px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
 .lb.on{background:var(--acc);color:#fff;border-color:var(--acc)}
-.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nh);background:var(--txt);display:flex;z-index:100;box-shadow:0 -2px 16px rgba(0,0,0,.2)}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;color:rgba(255,255,255,.35);font-family:inherit;font-size:10px;font-weight:600;cursor:pointer;border-top:3px solid transparent}
-.nb .ic{font-size:19px;line-height:1}
-.nb.on{color:#fff;border-top-color:var(--acc)}
+.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nh);background:#2C2416;display:flex;z-index:100;box-shadow:0 -1px 0 rgba(255,255,255,.06),0 -8px 24px rgba(0,0,0,.25);padding:4px 8px 0}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;color:rgba(245,239,230,.3);font-family:'DM Sans',inherit;font-size:9px;font-weight:500;cursor:pointer;border-top:2px solid transparent;padding:4px 0;letter-spacing:.03em;border-radius:0}
+.nb .ic{font-size:18px;line-height:1;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.nb.on{color:rgba(245,239,230,.9);border-top-color:transparent}.nb.on .ic{background:rgba(200,75,47,.22)}.nb.on .ic{color:#E8654A}
 .pg{display:none;flex-direction:column;min-height:calc(100vh - var(--nh))}
 .pg.on{display:flex}
 .hdr{background:var(--txt);padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.hdr h1{font-family:Georgia,serif;font-size:17px;color:#fff}
+.hdr h1{font-family:'DM Serif Display',Georgia,serif;font-size:17px;color:#fff}
 .hsub{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
 .hr{display:flex;align-items:center;gap:6px}
 .cnb{width:30px;height:30px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-.clbl{font-family:Georgia,serif;font-size:13px;color:#fff;min-width:86px;text-align:center}
+.clbl{font-family:'DM Serif Display',Georgia,serif;font-size:13px;color:#fff;min-width:86px;text-align:center}
 .out-btn{background:transparent;border:1px solid rgba(255,255,255,.2);border-radius:6px;color:rgba(255,255,255,.5);padding:3px 8px;font-size:11px;cursor:pointer;font-family:inherit}
 .cnt{padding:12px;display:flex;flex-direction:column;gap:10px}
 .btn{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:none}
@@ -75,7 +78,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .cmiss{color:#d97706}
 .dp{background:var(--sur);border-radius:13px;border:1px solid var(--bdr);box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
 .dph{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid var(--bdr);background:var(--bg)}
-.dpt{font-family:Georgia,serif;font-size:14px}
+.dpt{font-family:'DM Serif Display',Georgia,serif;font-size:14px}
 .alist{display:flex;flex-direction:column}
 .arow{display:flex;align-items:flex-start;gap:6px;padding:8px 12px;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
 .arow:last-child{border-bottom:none}
@@ -97,7 +100,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .db-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .db-card{background:var(--sur);border-radius:12px;border:1px solid var(--bdr);padding:12px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
 .db-card.full{grid-column:1/-1}
-.db-val{font-family:Georgia,serif;font-size:24px;font-weight:700;line-height:1}
+.db-val{font-family:'DM Serif Display',Georgia,serif;font-size:24px;font-weight:700;line-height:1}
 .db-lbl{font-size:11px;color:var(--mut);margin-top:3px}
 .db-acc{color:var(--acc)}.db-grn{color:var(--grn)}.db-blu{color:var(--blu)}.db-pur{color:var(--pur)}
 .chart-wrap{background:var(--sur);border-radius:13px;border:1px solid var(--bdr);padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
@@ -158,7 +161,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .modal{background:var(--sur);border-radius:18px 18px 0 0;padding:14px 15px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:540px;max-height:88vh;overflow-y:auto;animation:up .2s ease}
 @keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .drag{width:36px;height:4px;background:var(--bdr);border-radius:99px;margin:0 auto 12px}
-.modal h2{font-family:Georgia,serif;font-size:17px;margin-bottom:12px}
+.modal h2{font-family:'DM Serif Display',Georgia,serif;font-size:17px;margin-bottom:12px}
 .fg{margin-bottom:10px}
 .fg label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
 .fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--bdr);background:var(--bg);font-family:inherit;font-size:14px;color:var(--txt);outline:none}
@@ -201,15 +204,15 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .in-val:focus{border-color:var(--acc)}
 #WV{display:none;min-height:100vh;background:var(--bg)}
 .wvh{background:var(--txt);padding:15px 16px 11px;text-align:center}
-.wvh h1{font-family:Georgia,serif;font-size:18px;color:#fff}
+.wvh h1{font-family:'DM Serif Display',Georgia,serif;font-size:18px;color:#fff}
 .wvsub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
 .wvm{display:flex;align-items:center;justify-content:space-between;padding:10px 14px}
-.wvlbl{font-family:Georgia,serif;font-size:15px}
+.wvlbl{font-family:'DM Serif Display',Georgia,serif;font-size:15px}
 .wvnb{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--bdr);background:var(--sur);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
 .wvdays{padding:0 14px 20px}
 .wvday{background:var(--sur);border-radius:9px;border:1px solid var(--bdr);padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
 .wvday.tod{border-color:var(--acc);background:var(--al)}
-.wvdate{font-family:Georgia,serif;font-size:18px;font-weight:700;min-width:32px;text-align:center;color:var(--acc);line-height:1}
+.wvdate{font-family:'DM Serif Display',Georgia,serif;font-size:18px;font-weight:700;min-width:32px;text-align:center;color:var(--acc);line-height:1}
 .wvdow{font-size:9px;font-weight:600;color:var(--mut);text-align:center;margin-top:1px}
 .wvedot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
 .wvempty{text-align:center;padding:32px 20px;color:var(--mut);font-size:13px}
@@ -221,7 +224,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .side-menu{position:fixed;top:0;left:-260px;width:250px;height:100vh;background:var(--sur);z-index:201;box-shadow:4px 0 20px rgba(0,0,0,.15);transition:left .25s ease;display:flex;flex-direction:column;overflow-y:auto}
 .side-menu.on{left:0}
 .sm-hdr{background:var(--txt);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
-.sm-hdr-title{font-family:Georgia,serif;font-size:16px;color:#fff}
+.sm-hdr-title{font-family:'DM Serif Display',Georgia,serif;font-size:16px;color:#fff}
 .sm-close{width:30px;height:30px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .sm-item{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--bdr);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .sm-item:active{background:var(--al)}
@@ -236,7 +239,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .chat-ovr{display:none;position:fixed;inset:0;z-index:400;pointer-events:none}.chat-ovr.on{display:block}.chat-drag-handle{height:32px;cursor:grab;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bg);border-radius:14px 14px 0 0;border-bottom:1px solid var(--bdr)}.chat-drag-handle:active{cursor:grabbing}.chat-drag-bar{width:36px;height:4px;background:var(--bdr);border-radius:99px}
 .chat-box{background:var(--sur);border-radius:14px;width:92vw;max-width:400px;height:65vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.25);position:fixed;bottom:calc(var(--nh)+14px);right:12px;pointer-events:all;border:1px solid var(--bdr);animation:chat-in .2s ease}@keyframes chat-in{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 .chat-hdr{background:var(--txt);border-radius:18px 18px 0 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.chat-hdr-title{font-family:Georgia,serif;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px}
+.chat-hdr-title{font-family:'DM Serif Display',Georgia,serif;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px}
 .chat-close{width:28px;height:28px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:16px}
 .chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
 .msg{max-width:80%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-break:break-word}
@@ -257,9 +260,101 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 .chat-fab-wrap.show{display:block}
 .chat-fab-btn{width:46px;height:46px;border-radius:50%;background:var(--acc);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(200,75,47,.4)}
 .chat-badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#ef4444;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--sur)}
+
+/* ═══ INTRO SCREEN ═══ */
+#introScreen{
+  position:fixed;inset:0;z-index:2000;
+  background:#1A110A;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:26px;padding:40px;
+  transition:opacity .5s ease,transform .5s ease;
+}
+#introScreen.hide{opacity:0;transform:scale(1.04);pointer-events:none}
+
+/* Background radial glow */
+.intro-bg-glow{
+  position:absolute;top:35%;left:50%;transform:translate(-50%,-50%);
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(200,75,47,.22) 0%,rgba(200,75,47,.08) 45%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+  animation:intro-glow 2s ease-in-out infinite;
+}
+@keyframes intro-glow{0%,100%{opacity:.55}50%{opacity:.95}}
+
+/* Square pulse rings */
+.intro-logo-w{position:relative;width:84px;height:84px;display:flex;align-items:center;justify-content:center}
+.intro-sq-ring{position:absolute;inset:0;border:2px solid #C84B2F;border-radius:18px}
+.intro-sq-ring.r1{animation:isq1 1.8s cubic-bezier(.4,0,.6,1) infinite}
+.intro-sq-ring.r2{animation:isq2 1.8s cubic-bezier(.4,0,.6,1) .3s infinite}
+.intro-sq-ring.r3{animation:isq3 1.8s cubic-bezier(.4,0,.6,1) .6s infinite}
+@keyframes isq1{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.7);opacity:0}}
+@keyframes isq2{0%{transform:scale(1);opacity:.4}100%{transform:scale(2.0);opacity:0}}
+@keyframes isq3{0%{transform:scale(1);opacity:.25}100%{transform:scale(2.35);opacity:0}}
+
+/* Logo inner */
+.intro-logo-i{
+  width:70px;height:70px;background:rgba(200,75,47,.1);
+  border-radius:17px;display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:2;border:1.5px solid rgba(200,75,47,.35)
+}
+
+/* Animated squares */
+.intro-sq-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:2px;width:38px;height:38px}
+.isq{border-radius:4px;transform-origin:center}
+.isq.tl{background:#C84B2F;animation:isq-tl 1.6s ease-in-out infinite}
+.isq.tr{background:rgba(245,239,230,.18);animation:isq-tr 1.6s ease-in-out infinite}
+.isq.bl{background:rgba(245,239,230,.18);animation:isq-bl 1.6s ease-in-out infinite}
+.isq.br{background:#C84B2F;animation:isq-br 1.6s ease-in-out infinite}
+.isq-cw{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none}
+.isq-c{width:7px;height:7px;border-radius:2px;background:#C84B2F;opacity:.5;animation:isq-center 1.6s ease-in-out infinite}
+@keyframes isq-tl{0%,100%{opacity:1;transform:scale(1)}25%{opacity:.25;transform:scale(.8)}}
+@keyframes isq-tr{0%,100%{opacity:.25;transform:scale(.8)}25%{opacity:1;transform:scale(1)}}
+@keyframes isq-bl{0%,100%{opacity:.25;transform:scale(.8)}75%{opacity:1;transform:scale(1)}}
+@keyframes isq-br{0%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1)}100%{opacity:.25;transform:scale(.8)}}
+@keyframes isq-center{0%,100%{opacity:.35;transform:scale(.85)}12.5%,62.5%{opacity:.85;transform:scale(1.1)}}
+
+/* Title */
+.intro-title{text-align:center;animation:intro-fadein .6s ease .2s both}
+@keyframes intro-fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.intro-ajlyn{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:600;color:#F5EFE6;letter-spacing:.08em;display:block;margin-bottom:2px}
+.intro-div{width:40px;height:1px;background:linear-gradient(90deg,transparent,#C84B2F,transparent);opacity:.5;margin:5px auto 6px}
+.intro-huvaar{font-family:'DM Serif Display',Georgia,serif;font-size:16px;color:#C84B2F;letter-spacing:.05em;display:block}
+
+/* Loading bar */
+.intro-bar-w{width:120px;background:rgba(245,239,230,.07);border-radius:99px;height:2px;overflow:hidden;animation:intro-fadein .6s ease .4s both}
+.intro-bar-f{height:100%;border-radius:99px;background:linear-gradient(90deg,#7A2010,#C84B2F,#E8924A);width:0;animation:intro-bar 2.5s cubic-bezier(.4,0,.2,1) .3s forwards}
+@keyframes intro-bar{0%{width:0%}70%{width:92%}100%{width:92%}}
+
+/* ═══ NAV LOGO (calendar tab) ═══ */
+.nb-logo-svg{width:22px;height:22px}
+.nb-logo-sq{transform-origin:center}
+.nb-logo-sq.tl-nb{animation:isq-tl 1.6s ease-in-out infinite}
+.nb-logo-sq.tr-nb{animation:isq-tr 1.6s ease-in-out infinite}
+.nb-logo-sq.bl-nb{animation:isq-bl 1.6s ease-in-out infinite}
+.nb-logo-sq.br-nb{animation:isq-br 1.6s ease-in-out infinite}
 </style>
 </head>
 <body>
+<div id="introScreen">
+  <div class="intro-bg-glow"></div>
+  <div class="intro-logo-w">
+    <div class="intro-logo-i">
+      <div class="intro-sq-grid">
+        <div class="isq tl"></div>
+        <div class="isq tr"></div>
+        <div class="isq bl"></div>
+        <div class="isq br"></div>
+      </div>
+      <div class="isq-cw"><div class="isq-c"></div></div>
+    </div>
+  </div>
+  <div class="intro-title">
+    <span class="intro-ajlyn">АЖЛЫН</span>
+    <div class="intro-div"></div>
+    <span class="intro-huvaar">хуваарь</span>
+  </div>
+  <div class="intro-bar-w"><div class="intro-bar-f"></div></div>
+</div>
 <div id="LS">
   <div style="position:absolute;top:14px;right:14px"><button id="langToggle" onclick="cycleLang()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">МН</button></div>
   <div class="app-title" id="lsTitle">Ажлын Хуваарь</div>
@@ -287,7 +382,15 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 </div>
 <div id="APP" style="display:none" data-ready="1">
 <div class="pg on" id="calPage">
-  <div class="hdr" style="gap:10px"><button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div><h1 id="hCal">Хуваарь</h1><div class="hsub" id="hCalSub"></div></div>
+  <div class="hdr" style="gap:10px"><button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div><div style="display:flex;align-items:center;gap:10px">
+  <div style="width:32px;height:32px;background:rgba(200,75,47,.12);border-radius:9px;border:1px solid rgba(200,75,47,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+    <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="11" height="11" rx="3" fill="#C84B2F"/><rect x="18" y="3" width="11" height="11" rx="3" fill="rgba(245,239,230,0.22)"/><rect x="3" y="18" width="11" height="11" rx="3" fill="rgba(245,239,230,0.22)"/><rect x="18" y="18" width="11" height="11" rx="3" fill="#C84B2F"/><rect x="13.5" y="13.5" width="5" height="5" rx="1.5" fill="#C84B2F" opacity=".5"/></svg>
+  </div>
+  <div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:rgba(245,239,230,.85);letter-spacing:.04em;line-height:1">АЖЛЫН</div>
+    <h1 id="hCal" style="font-family:'DM Serif Display',serif;font-size:11px;color:#C84B2F;font-weight:400;line-height:1;margin:0;letter-spacing:.03em">хуваарь</h1>
+  </div>
+</div><div class="hsub" id="hCalSub"></div></div>
     <div class="hr"><button class="cnb" onclick="cm(-1)">←</button><div class="clbl" id="calLbl"></div><button class="cnb" onclick="cm(1)">→</button></div>
   </div>
   <div class="cnt">
@@ -368,7 +471,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 </div></div>
 <div class="ovr" id="oEmpCal"><div class="modal" onclick="event.stopPropagation()">
   <div class="drag"></div><h2 id="mECT">Хуваарь</h2>
-  <div id="ecSnap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="ecm(-1)">←</button><div id="ecLbl" style="font-family:Georgia,serif;font-size:13px"></div><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="ecm(1)">→</button></div>
+  <div id="ecSnap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="ecm(-1)">←</button><div id="ecLbl" style="font-family:'DM Serif Display',Georgia,serif;font-size:13px"></div><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="ecm(1)">→</button></div>
   <div class="ec-wrap"><div class="ec-dow" id="ecDow"></div><div class="ec-days" id="ecDays"></div></div>
   <div style="font-size:10px;color:var(--mut);margin-top:5px">🏠이삿날 · 🔴공휴일 · 🟣주말</div></div>
   <div style="display:flex;gap:8px;margin-top:10px"><button class="btn bo" style="flex:1;justify-content:center" onclick="ecCopy()">📋</button><button class="btn br" style="flex:1;justify-content:center" onclick="ecShare()">📸 Илгээх</button></div>
@@ -376,7 +479,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSys
 </div></div>
 <div class="ovr" id="oWrkCal"><div class="modal" onclick="event.stopPropagation()">
   <div class="drag"></div><h2 id="mWCT">Хуваарь</h2>
-  <div id="wcSnap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="wcm(-1)">←</button><div id="wcLbl" style="font-family:Georgia,serif;font-size:13px"></div><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="wcm(1)">→</button></div>
+  <div id="wcSnap"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="wcm(-1)">←</button><div id="wcLbl" style="font-family:'DM Serif Display',Georgia,serif;font-size:13px"></div><button class="cnb" style="background:var(--bg);border:1.5px solid var(--bdr);color:var(--txt)" onclick="wcm(1)">→</button></div>
   <div class="ec-wrap"><div class="ec-dow" id="wcDow"></div><div class="ec-days" id="wcDays"></div></div>
   <div id="wcLegend" style="font-size:10px;color:var(--mut);margin-top:5px"></div></div>
   <div style="display:flex;gap:8px;margin-top:10px"><button class="btn bo" style="flex:1;justify-content:center" onclick="wcCopy()">📋</button><button class="btn br" style="flex:1;justify-content:center" onclick="wcShare()">📸 Илгээх</button></div>
@@ -949,65 +1052,62 @@ function injectAdminChatBtns(){
 
 // ═══ CHAT DRAG (зөөвөрлөх) ═══
 (function(){
-  var dragging=false;
-  var startX=0,startY=0,startLeft=0,startBottom=0;
+  var ox=0, oy=0, el=null, moving=false;
 
-  function getBox(){return document.getElementById('chatBox');}
-
-  function onStart(e){
-    var box=getBox();if(!box)return;
-    dragging=true;
-    var touch=e.touches?e.touches[0]:e;
-    startX=touch.clientX;
-    startY=touch.clientY;
-    // Get current position
-    var rect=box.getBoundingClientRect();
-    startLeft=rect.left;
-    startBottom=window.innerHeight-rect.bottom;
-    box.style.transition='none';
-    box.style.right='auto';
-    box.style.bottom=startBottom+'px';
-    box.style.left=startLeft+'px';
+  function start(e){
+    var box = document.getElementById('chatBox');
+    if(!box) return;
+    moving = true;
+    el = box;
+    var t = e.touches ? e.touches[0] : e;
+    // Get current fixed position
+    var r = box.getBoundingClientRect();
+    el._startX = r.left;
+    el._startY = r.top;
+    ox = t.clientX;
+    oy = t.clientY;
+    el.style.transition = 'none';
+    el.style.left = r.left + 'px';
+    el.style.bottom = 'auto';
+    el.style.top = r.top + 'px';
+    el.style.right = 'auto';
     e.preventDefault();
     e.stopPropagation();
   }
 
-  function onMove(e){
-    if(!dragging)return;
-    var box=getBox();if(!box)return;
-    var touch=e.touches?e.touches[0]:e;
-    var dx=touch.clientX-startX;
-    var dy=touch.clientY-startY;
-    var newLeft=Math.max(0,Math.min(window.innerWidth-box.offsetWidth, startLeft+dx));
-    var newBottom=Math.max(0,Math.min(window.innerHeight-80, startBottom-dy));
-    box.style.left=newLeft+'px';
-    box.style.bottom=newBottom+'px';
+  function move(e){
+    if(!moving || !el) return;
+    var t = e.touches ? e.touches[0] : e;
+    var dx = t.clientX - ox;
+    var dy = t.clientY - oy;
+    var nl = Math.max(0, Math.min(window.innerWidth - el.offsetWidth, el._startX + dx));
+    var nt = Math.max(0, Math.min(window.innerHeight - 80, el._startY + dy));
+    el.style.left = nl + 'px';
+    el.style.top = nt + 'px';
     e.preventDefault();
   }
 
-  function onEnd(){
-    if(!dragging)return;
-    dragging=false;
-    var box=getBox();
-    if(box)box.style.transition='';
+  function end(){
+    moving = false;
+    if(el){ el.style.transition = ''; el = null; }
   }
 
-  function attach(){
-    var handle=document.getElementById('chatDragHandle');
-    if(!handle||handle._drag)return;
-    handle._drag=true;
-    handle.addEventListener('touchstart',onStart,{passive:false});
-    handle.addEventListener('mousedown',onStart,{passive:false});
+  function attachDrag(){
+    var h = document.getElementById('chatDragHandle');
+    if(!h || h._d) return;
+    h._d = true;
+    h.addEventListener('touchstart', start, {passive:false});
+    h.addEventListener('mousedown', start, {passive:false});
   }
 
-  document.addEventListener('touchmove',onMove,{passive:false});
-  document.addEventListener('mousemove',onMove,{passive:false});
-  document.addEventListener('touchend',onEnd);
-  document.addEventListener('mouseup',onEnd);
-
-  setInterval(attach,500);
-  setTimeout(attach,200);
+  document.addEventListener('touchmove', move, {passive:false});
+  document.addEventListener('mousemove', move, {passive:false});
+  document.addEventListener('touchend', end);
+  document.addEventListener('mouseup', end);
+  setInterval(attachDrag, 800);
+  setTimeout(attachDrag, 200);
 })();
+
 
 
 
@@ -1277,6 +1377,84 @@ function isIsat(ds, d){
   for(var i=0;i<a.length;i++)if(a[i]===d)return true;
   return false;
 }
+
+// Style calendar nav button specially
+function styleCalNav(){
+  var calBtn = document.getElementById('nb_cal');
+  if(!calBtn || calBtn._styled) return;
+  calBtn._styled = true;
+  // Make the icon bigger and more prominent
+  var ic = calBtn.querySelector('.ic');
+  if(ic){
+    ic.style.fontSize = '22px';
+    ic.style.width = '40px';
+    ic.style.height = '40px';
+    ic.style.borderRadius = '12px';
+  }
+}
+setInterval(styleCalNav, 800);
+setTimeout(styleCalNav, 300);
+
+
+// Add hamburger button to all page headers
+function injectHamAllPages(){
+  var pages = ['dashPage','setPage','adminPage','adminSetPage'];
+  pages.forEach(function(pid){
+    var pg = document.getElementById(pid);
+    if(!pg || pg._hamDone) return;
+    var hdr = pg.querySelector('.hdr');
+    if(!hdr) return;
+    // Check if ham already there
+    if(hdr.querySelector('.ham-btn-inject')) return;
+    pg._hamDone = true;
+    var btn = document.createElement('button');
+    btn.className = 'ham-btn ham-btn-inject';
+    btn.onclick = openSideMenu;
+    btn.innerHTML = '<div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div>';
+    btn.style.cssText = 'margin-left:8px;flex-shrink:0';
+    // Insert at beginning of hdr (left side)
+    hdr.insertBefore(btn, hdr.firstChild);
+  });
+}
+setInterval(injectHamAllPages, 1000);
+setTimeout(injectHamAllPages, 500);
+
+
+// ═══ INTRO SCREEN ═══
+(function(){
+  var intro = document.getElementById('introScreen');
+  if(!intro) return;
+  // Hide after bar fills
+  setTimeout(function(){
+    intro.classList.add('hide');
+    setTimeout(function(){
+      intro.style.display = 'none';
+    }, 550);
+  }, 2800);
+})();
+
+// Replace calendar tab icon with animated logo
+function styleCalTab(){
+  var nb = document.getElementById('nb_cal');
+  if(!nb || nb._logoSet) return;
+  nb._logoSet = true;
+  var ic = nb.querySelector('.ic');
+  if(!ic) return;
+  ic.innerHTML = '<svg class="nb-logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    + '<rect class="nb-logo-sq tl-nb" x="3" y="3" width="11" height="11" rx="3" fill="#C84B2F"/>'
+    + '<rect class="nb-logo-sq tr-nb" x="18" y="3" width="11" height="11" rx="3" fill="rgba(245,239,230,0.25)"/>'
+    + '<rect class="nb-logo-sq bl-nb" x="3" y="18" width="11" height="11" rx="3" fill="rgba(245,239,230,0.25)"/>'
+    + '<rect class="nb-logo-sq br-nb" x="18" y="18" width="11" height="11" rx="3" fill="#C84B2F"/>'
+    + '<rect x="13.5" y="13.5" width="5" height="5" rx="1.5" fill="#C84B2F" opacity=".55"/>'
+    + '</svg>';
+  ic.style.fontSize = '0';
+  ic.style.width = '34px';
+  ic.style.height = '34px';
+  ic.style.background = 'none';
+}
+setInterval(styleCalTab, 500);
+setTimeout(styleCalTab, 300);
+
 </script>
 </body>
 </html>
