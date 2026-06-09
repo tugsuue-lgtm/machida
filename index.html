@@ -111,6 +111,9 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 .bar-lbl{font-size:8px;color:var(--mut);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
 .bar-val{font-size:8px;font-weight:700}
 .ss{background:var(--sur);border-radius:13px;border:1px solid var(--bdr);box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
+.admin-search{padding:8px 12px;border-bottom:1px solid var(--bdr);background:var(--sur)}
+.admin-search input{width:100%;padding:7px 10px;border-radius:8px;border:1px solid var(--bdr);background:var(--bg);color:var(--txt);font-size:13px;font-family:inherit;outline:none}
+.search-count{font-size:11px;color:var(--mut);white-space:nowrap}
 .sh{padding:9px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);background:var(--bg)}
 .sht{font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
 .bdg{font-size:9px;padding:2px 6px;border-radius:99px;font-weight:700}
@@ -791,12 +794,12 @@ setInterval(_patchTX, 100);
     <div class="shr-sec"><div class="shr-hdr" id="shrHdr">🔗 Хуваарийн холбоос</div><div id="shrList"></div></div>
   </div>
 </div>
-<div class="pg" id="dashPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hDash">Дашбоард</h1><div class="hsub" id="hDashSub">СТАТИСТИК</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="dashCnt"></div></div>
+<div class="pg" id="dashPage"><div class="hdr"><div><h1 id="hDash">Дашбоард</h1><div class="hsub" id="hDashSub">СТАТИСТИК</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="dashCnt"></div></div>
 <div class="pg" id="setPage"><div class="hdr"><div><h1 id="hSet">Цэс</h1><div class="hsub" id="hSetSub">АЖИЛ ОЛГОГЧ · АЖИЛЧИД</div></div><div style="display:flex;align-items:center;gap:6px"></div></div>
   <div class="cnt" id="setCnt"></div>
 </div>
-<div class="pg" id="adminPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
-<div class="pg" id="adminSetPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
+<div class="pg" id="adminPage"><div class="hdr"><div><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
+<div class="pg" id="adminSetPage"><div class="hdr"><div><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
 <nav class="bnav" id="mainNav"></nav>
 </div>
 <!-- CHAT -->
