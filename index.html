@@ -224,7 +224,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 /* SIDE MENU */
 .side-menu-overlay{display:none;position:fixed;inset:0;background:rgba(26,22,18,.5);z-index:200}
 .side-menu-overlay.on{display:block}
-.side-menu{position:fixed;top:0;left:-260px;width:250px;height:100vh;background:var(--sur);z-index:201;box-shadow:4px 0 20px rgba(0,0,0,.15);transition:left .25s ease;display:flex;flex-direction:column;overflow-y:auto}
+.side-menu{position:fixed;top:0;left:-260px;width:250px;height:100vh;background:#FAF7F2;z-index:201;box-shadow:4px 0 20px rgba(0,0,0,.15);transition:left .25s ease;display:flex;flex-direction:column;overflow-y:auto}
 .side-menu.on{left:0}
 .sm-hdr{background:var(--txt);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
 .sm-hdr-title{font-family:'DM Serif Display',Georgia,serif;font-size:16px;color:#fff}
@@ -644,6 +644,14 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 /* Hide duplicate search bar from obfuscated renderAdmin */
 #adminCnt > .admin-search { display: none !important; }
 #adminCnt > input[type="text"] { display: none !important; }
+
+.smi{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;transition:background .15s}
+.smi:active{background:rgba(200,75,47,.12)}
+.smi-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.smi-tx{display:flex;flex-direction:column}
+.smi-t{font-size:13px;font-weight:500;color:#2C2416}
+.smi-s{font-size:10px;color:rgba(44,36,22,.45);margin-top:1px}
+.smi-sep{height:1px;background:rgba(44,36,22,.1);margin:4px 18px}
 </style>
 </style>
 </head>
@@ -776,17 +784,21 @@ setInterval(_patchTX, 100);
 </div>
 <div id="APP" style="display:none" data-ready="1">
 <div class="pg on" id="calPage">
-  <div class="hdr" style="gap:10px"><button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div><div style="display:flex;align-items:center;gap:10px">
-  <div style="width:32px;height:32px;background:rgba(200,75,47,.12);border-radius:9px;border:1px solid rgba(200,75,47,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-    <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="11" height="11" rx="3" fill="#C84B2F"/><rect x="18" y="3" width="11" height="11" rx="3" fill="rgba(245,239,230,0.22)"/><rect x="3" y="18" width="11" height="11" rx="3" fill="rgba(245,239,230,0.22)"/><rect x="18" y="18" width="11" height="11" rx="3" fill="#C84B2F"/><rect x="13.5" y="13.5" width="5" height="5" rx="1.5" fill="#C84B2F" opacity=".5"/></svg>
+  <div class="hdr" style="display:flex;flex-direction:column;gap:0;padding-bottom:8px">
+  <div style="display:flex;align-items:center;width:100%;gap:0">
+    <button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button>
+    <div style="display:flex;flex-direction:column;flex:1;padding:0 10px">
+      <span id="hdrGreeting" style="font-size:11px;color:rgba(245,239,230,.5);font-weight:400">Сайн байна уу?</span>
+      <span id="hdrName" style="font-size:14px;color:#F5EFE6;font-weight:600;line-height:1.3">Хэрэглэгч</span>
+    </div>
+    <button onclick="openBellChat()" id="bellBtn" style="background:none;border:none;cursor:pointer;position:relative;padding:6px;flex-shrink:0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span id="bellDot" style="display:none;position:absolute;top:3px;right:3px;width:8px;height:8px;background:#C84B2F;border-radius:50%;border:1.5px solid #2C2416"></span>
+    </button>
   </div>
-  <div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:rgba(245,239,230,.85);letter-spacing:.04em;line-height:1">АЖЛЫН</div>
-    <h1 id="hCal" style="font-family:'DM Serif Display',serif;font-size:11px;color:#C84B2F;font-weight:400;line-height:1;margin:0;letter-spacing:.03em">хуваарь</h1>
-  </div>
-</div><div class="hsub" id="hCalSub"></div></div>
-    <div class="hr"><button class="cnb" onclick="cm(-1)">←</button><div class="clbl" id="calLbl"></div><button class="cnb" onclick="cm(1)">→</button></div>
-  </div>
+  <h1 id="hCal" style="display:none"></h1><div class="hsub" id="hCalSub" style="display:none"></div>
+  <div class="hr" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px"><button class="cnb" onclick="cm(-1)">←</button><div class="clbl" id="calLbl"></div><button class="cnb" onclick="cm(1)">→</button></div>
+</div>
   <div class="cnt">
     <div id="subBanner"></div><div id="limitBanner"></div>
     <div class="cwrap"><div class="cdow" id="cdow"></div><div class="cdays" id="cdays"></div></div>
@@ -794,12 +806,12 @@ setInterval(_patchTX, 100);
     <div class="shr-sec"><div class="shr-hdr" id="shrHdr">🔗 Хуваарийн холбоос</div><div id="shrList"></div></div>
   </div>
 </div>
-<div class="pg" id="dashPage"><div class="hdr"><div><h1 id="hDash">Дашбоард</h1><div class="hsub" id="hDashSub">СТАТИСТИК</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="dashCnt"></div></div>
-<div class="pg" id="setPage"><div class="hdr"><div><h1 id="hSet">Цэс</h1><div class="hsub" id="hSetSub">АЖИЛ ОЛГОГЧ · АЖИЛЧИД</div></div><div style="display:flex;align-items:center;gap:6px"></div></div>
+<div class="pg" id="dashPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hDash">Дашбоард</h1><div class="hsub" id="hDashSub">СТАТИСТИК</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="dashCnt"></div></div>
+<div class="pg" id="setPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hSet" style="display:none">Цэс</h1><div class="hsub" id="hSetSub" style="display:none">АЖИЛ ОЛГОГЧ · АЖИЛЧИД</div></div><div style="display:flex;align-items:center;gap:6px"></div></div>
   <div class="cnt" id="setCnt"></div>
 </div>
-<div class="pg" id="adminPage"><div class="hdr"><div><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
-<div class="pg" id="adminSetPage"><div class="hdr"><div><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
+<div class="pg" id="adminPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
+<div class="pg" id="adminSetPage"><div class="hdr"><button class="ham-btn" onclick="openSideMenu()" style="flex-shrink:0;margin-right:6px"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div style="flex:1"><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
 <nav class="bnav" id="mainNav"></nav>
 </div>
 <!-- CHAT -->
@@ -923,7 +935,7 @@ setInterval(_patchTX, 100);
 <!-- Firebase SDKs -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged, updatePassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -942,6 +954,8 @@ const fbApp = initializeApp(firebaseConfig);
 // App Check disabled
 
 const fbAuth = getAuth(fbApp);
+// Set persistence to LOCAL so login survives app close (Remember me)
+setPersistence(fbAuth, browserLocalPersistence).catch(function(e){ console.warn("persistence:", e); });
 const fbDb = getFirestore(fbApp);
 window._fbDbInst = fbDb;
 
@@ -1095,7 +1109,11 @@ window.fbLoadCfg = async function() {
 window.fbRegister = async function(email, password) {
   return await createUserWithEmailAndPassword(fbAuth, email, password);
 };
-window.fbLogin = async function(email, password) {
+window.fbLogin = async function(email, password, remember) {
+  // remember=true → LOCAL (survives close), false → SESSION (until tab close)
+  try {
+    await setPersistence(fbAuth, remember === false ? browserSessionPersistence : browserLocalPersistence);
+  } catch(e){ console.warn("persistence:", e); }
   return await signInWithEmailAndPassword(fbAuth, email, password);
 };
 window.fbLogout = async function() {
@@ -1209,7 +1227,7 @@ var a0_0x106990=a0_0x3ce6;(function(_0x9169b8,_0x4087e4){var _0x58dbb9=a0_0x3ce6
 
   // Admin шалгах
   if(email==="machida.admin@gmail.com"){
-    window.fbLogin(email,p).then(async function(cred){
+    window.fbLogin(email,p,(g("lsRem")?g("lsRem").checked:true)).then(async function(cred){
       var uid=cred.user.uid;
       cu={name:"admin",role:"admin",uid:uid,exp:"2099-12-31",plan:"admin",active:true};
       db={employers:[],workers:[],schedules:{},cards:{}};
@@ -1230,7 +1248,7 @@ var a0_0x106990=a0_0x3ce6;(function(_0x9169b8,_0x4087e4){var _0x58dbb9=a0_0x3ce6
   }
 
   // Хэрэглэгч - шууд email-ээр нэвтрэх
-  window.fbLogin(email,p).then(async function(cred){
+  window.fbLogin(email,p,(g("lsRem")?g("lsRem").checked:true)).then(async function(cred){
     var uid=cred.user.uid;
     var profile=await window.fbLoadProfile(uid);
     if(!profile){
@@ -1885,6 +1903,218 @@ setTimeout(renameSetNav, 3000);
   var obs = new MutationObserver(function(){ renameSetNav(); });
   obs.observe(nav, {childList:true, subtree:true, characterData:true});
 })();
+
+// ═══ NAV ENHANCEMENT ═══
+// Navigate to settings page and scroll to specific section
+function navEmployers(){
+  if(typeof sp==='function') sp('set');
+  setTimeout(function(){
+    if(typeof renderSetSection==='function') renderSetSection('emp');
+  }, 200);
+}
+function navWorkers(){
+  if(typeof sp==='function') sp('set');
+  setTimeout(function(){
+    if(typeof renderSetSection==='function') renderSetSection('wrk');
+  }, 200);
+}
+
+function _enhanceNav(){
+  var nav = document.getElementById('mainNav');
+  if(!nav) return;
+  if(nav.children.length === 0) return;
+  var isAdminNav = nav.querySelector('#nb_dash') || nav.querySelector('#nb_admin');
+  if(isAdminNav) return;
+  // Already our custom nav? skip
+  if(nav.querySelector('.nb-custom-center')) return;
+  nav.innerHTML = ''
+    + '<div onclick="navEmployers()" style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;opacity:.85;cursor:pointer">'
+    + '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>'
+    + '</div>'
+    + '<div class="nb-custom-center" onclick="if(typeof sp===\'function\')sp(\'cal\')" style="flex:0 0 auto;margin-top:-18px;cursor:pointer">'
+    + '<div style="width:52px;height:52px;background:#1A110A;border-radius:15px;border:3px solid var(--bg,#FAF7F2);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.5)">'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;width:26px;height:26px;position:relative">'
+    + '<div style="border-radius:3px;background:#C84B2F"></div>'
+    + '<div style="border-radius:3px;background:rgba(245,239,230,.2)"></div>'
+    + '<div style="border-radius:3px;background:rgba(245,239,230,.2)"></div>'
+    + '<div style="border-radius:3px;background:#C84B2F"></div>'
+    + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:2px;background:#C84B2F;opacity:.6"></div>'
+    + '</div></div></div>'
+    + '<div onclick="navWorkers()" style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;opacity:.85;cursor:pointer">'
+    + '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>'
+    + '</div>';
+}
+setInterval(_enhanceNav, 600);
+setTimeout(_enhanceNav, 400);
+
+// Hide chat FAB
+(function(){
+  var s=document.createElement('style');
+  s.textContent='#chatFabWrap{display:none!important}';
+  document.head.appendChild(s);
+})();
+
+
+
+// ═══ CUSTOM SIDE MENU ═══
+function _showInfoModal(title, rows){
+  var existing=document.getElementById('infoModal'); if(existing) existing.remove();
+  var m=document.createElement('div'); m.id='infoModal';
+  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.onclick=function(e){ if(e.target===m) m.remove(); };
+  var rowsHtml=rows.map(function(r){
+    return '<div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--bdr,#eee)">'
+      +'<span style="font-size:12px;color:var(--mut,#888)">'+r[0]+'</span>'
+      +'<span style="font-size:13px;font-weight:500;color:var(--txt,#2C2416)">'+r[1]+'</span></div>';
+  }).join('');
+  m.innerHTML='<div style="background:var(--sur,#fff);border-radius:16px;padding:22px;max-width:320px;width:100%" onclick="event.stopPropagation()">'
+    +'<h3 style="font-size:16px;font-weight:600;margin:0 0 14px;color:var(--txt,#2C2416)">'+title+'</h3>'
+    +rowsHtml
+    +'<button onclick="document.getElementById(\'infoModal\').remove()" style="width:100%;padding:11px;border:none;border-radius:10px;background:#C84B2F;color:#fff;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px">'+(lang==='kr'?'닫기':lang==='en'?'Close':'Хаах')+'</button>'
+    +'</div>';
+  document.body.appendChild(m);
+}
+function showProfile(){
+  closeSideMenu();
+  var u=cu||{};
+  var L=function(mn,kr,en){return lang==='kr'?kr:lang==='en'?en:mn;};
+  _showInfoModal(L('Профайл','프로필','Profile'),[
+    [L('Нэр','이름','Name'), u.username||'-'],
+    [L('И-мэйл','이메일','Email'), u.email||'-'],
+    [L('Утас','전화','Phone'), u.phone||'-']
+  ]);
+}
+function showPlan(){
+  closeSideMenu();
+  var u=cu||{};
+  var d=u.exp?dLeft(u.exp):0;
+  var L=function(mn,kr,en){return lang==='kr'?kr:lang==='en'?en:mn;};
+  var plans={trial:L('Туршилт','체험','Trial'),basic:L('Үндсэн','기본','Basic'),pro:L('Про','프로','Pro')};
+  _showInfoModal(L('Эрхийн мэдээлэл','권한 정보','Plan Info'),[
+    [L('Төлөвлөгөө','요금제','Plan'), plans[u.plan]||plans.trial],
+    [L('Үлдсэн өдөр','남은 일수','Days left'), (d>0?d:0)+''],
+    [L('Дуусах огноо','만료일','Expires'), u.exp||'-']
+  ]);
+}
+function showBackup(){
+  closeSideMenu();
+  // Show export/import modal directly
+  var existing = document.getElementById('backupModal');
+  if(existing) existing.remove();
+  var m = document.createElement('div');
+  m.id = 'backupModal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.onclick = function(e){ if(e.target===m) m.remove(); };
+  var L = function(mn,kr,en){ return lang==='kr'?kr:lang==='en'?en:mn; };
+  m.innerHTML = '<div style="background:var(--sur,#fff);border-radius:16px;padding:22px;max-width:320px;width:100%" onclick="event.stopPropagation()">'
+    + '<h3 style="font-size:16px;font-weight:600;margin:0 0 6px;color:var(--txt,#2C2416)">'+L('Өгөгдөл & Backup','데이터 & 백업','Data & Backup')+'</h3>'
+    + '<p style="font-size:12px;color:var(--mut,#888);margin:0 0 16px;line-height:1.5">'+L('Бүх өгөгдлийг файлд хадгалах эсвэл сэргээх','모든 데이터를 파일로 저장/복원','Save or restore all data')+'</p>'
+    + '<button onclick="exportData();document.getElementById(\'backupModal\').remove()" style="width:100%;padding:12px;border:none;border-radius:10px;background:#C84B2F;color:#fff;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px">📤 '+L('Татах (Export)','내보내기','Export')+'</button>'
+    + '<label style="display:block;width:100%;padding:12px;border:1.5px solid var(--bdr,#ddd);border-radius:10px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;color:var(--txt,#2C2416)">📥 '+L('Сэргээх (Import)','가져오기','Import')+'<input type="file" accept=".json" style="display:none" onchange="importData(this);document.getElementById(\'backupModal\').remove()"></label>'
+    + '<button onclick="document.getElementById(\'backupModal\').remove()" style="width:100%;padding:10px;border:none;background:none;color:var(--mut,#888);font-size:13px;cursor:pointer;margin-top:8px">'+L('Хаах','닫기','Close')+'</button>'
+    + '</div>';
+  document.body.appendChild(m);
+}
+
+// Override buildSideMenu with our 6-item menu
+function buildSideMenu(){
+  var el = document.getElementById('smItems');
+  if(!el) return;
+  var u = cu || {};
+  var L = function(mn,kr,en){ return lang==='kr'?kr:lang==='en'?en:mn; };
+  var langBadge = lang==='kr'?'КР':lang==='en'?'EN':'МН';
+  
+  el.innerHTML = ''
+    // Профайл
+    + '<div class="smi" onclick="showProfile()">'
+    + '<div class="smi-ic" style="background:rgba(200,75,47,.12)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C84B2F" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>'
+    + '<div class="smi-tx"><div class="smi-t">'+L('Профайл','프로필','Profile')+'</div><div class="smi-s">'+(u.username||'')+'</div></div></div>'
+    // Эрхийн мэдээлэл
+    + '<div class="smi" onclick="showPlan()">'
+    + '<div class="smi-ic" style="background:rgba(234,179,8,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.8" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div>'
+    + '<div class="smi-tx"><div class="smi-t">'+L('Эрхийн мэдээлэл','권한 정보','Plan Info')+'</div></div></div>'
+    + '<div class="smi-sep"></div>'
+    // Backup
+    + '<div class="smi" onclick="showBackup()">'
+    + '<div class="smi-ic" style="background:rgba(59,130,246,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>'
+    + '<div class="smi-tx"><div class="smi-t">'+L('Өгөгдөл & Backup','데이터 & 백업','Data & Backup')+'</div></div></div>'
+    // Холбоо барих (чат)
+    + '<div class="smi" onclick="closeSideMenu();openChat()">'
+    + '<div class="smi-ic" style="background:rgba(34,197,94,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>'
+    + '<div class="smi-tx"><div class="smi-t">'+L('Холбоо барих','문의하기','Contact')+'</div></div></div>'
+    + '<div class="smi-sep"></div>'
+    // Хэл солих - shows options
+    + '<div class="smi" onclick="showLangPicker()">'
+    + '<div class="smi-ic" style="background:rgba(44,36,22,.06)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(44,36,22,.6)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div>'
+    + '<div class="smi-tx"><div class="smi-t">'+L('Хэл солих','언어 변경','Language')+'</div></div>'
+    + '<div style="margin-left:auto;background:rgba(44,36,22,.08);border-radius:6px;padding:3px 8px;font-size:11px;color:rgba(44,36,22,.55)">'+langBadge+'</div></div>'
+    // Гарах
+    + '<div class="smi" onclick="closeSideMenu();doLogout()">'
+    + '<div class="smi-ic" style="background:rgba(239,68,68,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>'
+    + '<div class="smi-tx"><div class="smi-t" style="color:#ef4444">'+L('Гарах','로그아웃','Logout')+'</div></div></div>';
+}
+
+
+function showLangPicker(){
+  closeSideMenu();
+  var existing=document.getElementById('langModal'); if(existing) existing.remove();
+  var m=document.createElement('div'); m.id='langModal';
+  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:flex-end;justify-content:center';
+  m.onclick=function(e){ if(e.target===m) m.remove(); };
+  var langs=[['mn','🇲🇳','Монгол'],['kr','🇰🇷','한국어'],['en','🇬🇧','English']];
+  var items=langs.map(function(lg){
+    var active = (typeof lang!=='undefined' && lang===lg[0]);
+    return '<div onclick="_setLang(\''+lg[0]+'\')" style="display:flex;align-items:center;gap:12px;padding:15px 20px;cursor:pointer;'+(active?'background:rgba(200,75,47,.1)':'')+'">'
+      +'<span style="font-size:22px">'+lg[1]+'</span>'
+      +'<span style="font-size:14px;font-weight:'+(active?'600':'400')+';color:var(--txt,#2C2416);flex:1">'+lg[2]+'</span>'
+      +(active?'<span style="color:#C84B2F;font-size:16px">✓</span>':'')+'</div>';
+  }).join('');
+  m.innerHTML='<div style="background:var(--sur,#fff);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:8px 0 24px" onclick="event.stopPropagation()">'
+    +'<div style="width:36px;height:4px;background:var(--bdr,#ddd);border-radius:2px;margin:8px auto 12px"></div>'
+    +'<h3 style="font-size:15px;font-weight:600;text-align:center;margin:0 0 8px;color:var(--txt,#2C2416)">'+(lang==='kr'?'언어 선택':lang==='en'?'Select Language':'Хэл сонгох')+'</h3>'
+    +items+'</div>';
+  document.body.appendChild(m);
+}
+function _setLang(l){
+  var modal=document.getElementById('langModal');
+  if(typeof setLang==='function') setLang(l);
+  else if(typeof cycleLang==='function'){ var g=0; while(lang!==l&&g<5){cycleLang();g++;} }
+  if(modal) modal.remove();
+  // Rebuild side menu with new language next open
+}
+
+
+
+
+
+// ═══ HEADER GREETING & BELL ═══
+function updateHeader(){
+  var g=document.getElementById('hdrGreeting'), n=document.getElementById('hdrName');
+  if(!g||!n) return;
+  var greetings={mn:'Сайн байна уу?',kr:'안녕하세요!',en:'Hello!'};
+  g.textContent = greetings[lang]||greetings.mn;
+  if(cu && cu.username) n.textContent = cu.username;
+}
+setInterval(updateHeader, 1500);
+setTimeout(updateHeader, 500);
+
+function openBellChat(){
+  if(typeof openChat==='function') openChat(cu && cu.uid);
+  var dot=document.getElementById('bellDot');
+  if(dot) dot.style.display='none';
+}
+
+function checkBellDot(){
+  var dot=document.getElementById('bellDot');
+  if(!dot || !cu || !cu.uid) return;
+  if(typeof window.fbUnreadCount==='function'){
+    window.fbUnreadCount(cu.uid, false).then(function(n){
+      dot.style.display = n>0 ? 'block' : 'none';
+    }).catch(function(){});
+  }
+}
+setInterval(checkBellDot, 5000);
+setTimeout(checkBellDot, 2500);
 </script>
 </body>
 </html>
