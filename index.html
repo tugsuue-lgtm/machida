@@ -850,7 +850,7 @@ setInterval(_patchTX, 100);
     </svg>
   </div>
   <div class="nb-center-wrap">
-    <div class="nb-logo-btn" onclick="showPage('calPage')">
+    <div class="nb-logo-btn" onclick="navGoHome()">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;width:28px;height:28px;position:relative">
         <div style="border-radius:4px;background:#C84B2F"></div>
         <div style="border-radius:4px;background:rgba(245,239,230,.2)"></div>
@@ -2121,7 +2121,7 @@ function _rebuildCustomNav(){
     + '<path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>'
     + '</svg></div>'
     + '<div class="nb-center-wrap">'
-    + '<div class="nb-logo-btn" onclick="showPage('calPage')">'
+    + '<div class="nb-logo-btn" onclick="navGoHome()">'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;width:28px;height:28px;position:relative">'
     + '<div style="border-radius:4px;background:#C84B2F"></div>'
     + '<div style="border-radius:4px;background:rgba(245,239,230,.2)"></div>'
@@ -2167,6 +2167,8 @@ function openAddWorker(){
   }
 }
 
+
+function navGoHome(){ if(typeof showPage==='function') showPage('calPage'); }
 </script>
 </body>
 </html>
