@@ -2040,16 +2040,34 @@ function closeSideMenu(){
 }
 
 function showProfile(){
-  // Open settings page profile section
-  if(typeof showPage==='function') showPage('setPage');
+  if(typeof showPage==='function'){
+    showPage('setPage');
+    setTimeout(function(){
+      var el = document.getElementById('setCnt');
+      if(el) el.scrollTop = 0;
+    }, 100);
+  }
 }
 
 function showPlan(){
-  if(typeof showPage==='function') showPage('setPage');
+  if(typeof showPage==='function'){
+    showPage('setPage');
+    setTimeout(function(){
+      // Scroll to plan section
+      var el = document.querySelector('.plan-card') || document.querySelector('.plan-section');
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    }, 200);
+  }
 }
 
 function showBackup(){
-  if(typeof showPage==='function') showPage('setPage');
+  if(typeof showPage==='function'){
+    showPage('setPage');
+    setTimeout(function(){
+      var el = document.querySelector('.backup-section') || document.querySelector('[onclick*="adminExport"]');
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    }, 200);
+  }
 }
 
 function openNotifChat(){
@@ -2082,6 +2100,72 @@ function checkBellDot(){
 }
 setInterval(checkBellDot, 5000);
 setTimeout(checkBellDot, 2000);
+
+
+// ═══ OVERRIDE NAV & FAB ═══
+// Hide chat FAB - it's now in side menu
+(function(){
+  var fab = document.getElementById('chatFabWrap');
+  if(fab) fab.style.display = 'none';
+})();
+
+// Override buildNav to keep our custom nav
+var _origBuildNav = null;
+function _rebuildCustomNav(){
+  var nav = document.getElementById('mainNav');
+  if(!nav || nav._custom) return;
+  nav._custom = true;
+  nav.innerHTML = '<div class="nb-side-btn" onclick="openEmpList()" id="nb_emp">'
+    + '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'
+    + '<rect x="2" y="7" width="20" height="14" rx="2"/>'
+    + '<path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>'
+    + '</svg></div>'
+    + '<div class="nb-center-wrap">'
+    + '<div class="nb-logo-btn" onclick="showPage('calPage')">'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;width:28px;height:28px;position:relative">'
+    + '<div style="border-radius:4px;background:#C84B2F"></div>'
+    + '<div style="border-radius:4px;background:rgba(245,239,230,.2)"></div>'
+    + '<div style="border-radius:4px;background:rgba(245,239,230,.2)"></div>'
+    + '<div style="border-radius:4px;background:#C84B2F"></div>'
+    + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:2px;background:#C84B2F;opacity:.6"></div>'
+    + '</div></div></div>'
+    + '<div class="nb-side-btn" onclick="openAddWorker()" id="nb_add">'
+    + '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'
+    + '<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/>'
+    + '<circle cx="9" cy="7" r="4"/>'
+    + '<line x1="19" y1="8" x2="19" y2="14"/>'
+    + '<line x1="22" y1="11" x2="16" y2="11"/>'
+    + '</svg></div>';
+}
+// Run aggressively to override buildNav
+setInterval(function(){
+  var nav = document.getElementById('mainNav');
+  if(nav) nav._custom = false; // Allow rebuild
+  _rebuildCustomNav();
+  // Also hide FAB
+  var fab = document.getElementById('chatFabWrap');
+  if(fab) fab.style.display = 'none';
+}, 300);
+setTimeout(_rebuildCustomNav, 100);
+setTimeout(_rebuildCustomNav, 500);
+
+// openEmpList - open assign modal or employer list
+function openEmpList(){
+  // Show employer assignment overlay
+  var o = document.getElementById('oAssign');
+  if(o) o.style.display = 'flex';
+  else if(typeof showPage === 'function') showPage('calPage');
+}
+
+// openAddWorker - open add worker modal  
+function openAddWorker(){
+  var o = document.getElementById('oWorker');
+  if(o) o.style.display = 'flex';
+  else {
+    // Try obfuscated addWorker function
+    if(typeof openAdmUser === 'function') openAdmUser();
+  }
+}
 
 </script>
 </body>
