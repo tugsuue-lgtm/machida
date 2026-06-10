@@ -644,6 +644,48 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',-apple-system,B
 /* Hide duplicate search bar from obfuscated renderAdmin */
 #adminCnt > .admin-search { display: none !important; }
 #adminCnt > input[type="text"] { display: none !important; }
+
+/* ═══ NEW NAV DESIGN ═══ */
+.bnav{display:flex;align-items:center;justify-content:space-between;padding:0 24px 10px;height:72px;background:#2C2416}
+.nb-side-btn{display:flex;align-items:center;justify-content:center;padding:10px;flex:1;opacity:.55;cursor:pointer;border:none;background:none}
+.nb-side-btn:active{opacity:1}
+.nb-center-wrap{flex:0 0 auto;margin-top:-22px}
+.nb-logo-btn{
+  width:56px;height:56px;
+  background:#1A110A;
+  border-radius:16px;
+  border:3px solid #FAF7F2;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.5);
+  position:relative;
+}
+.nb-logo-btn:active{transform:scale(.96)}
+
+/* ═══ NEW SIDE MENU ═══ */
+.sm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none}
+.sm-overlay.open{display:block}
+.sm-drawer{position:fixed;top:0;left:0;width:78%;max-width:300px;height:100%;background:#1A110A;z-index:201;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.sm-drawer.open{transform:translateX(0)}
+.sm-profile{padding:20px 18px 16px;border-bottom:1px solid rgba(245,239,230,.08)}
+.sm-avatar{width:46px;height:46px;background:rgba(200,75,47,.15);border:1.5px solid rgba(200,75,47,.35);border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.sm-uname{font-size:15px;font-weight:600;color:#F5EFE6;line-height:1.3}
+.sm-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,75,47,.15);border:1px solid rgba(200,75,47,.3);border-radius:6px;padding:2px 8px;margin-top:5px}
+.sm-badge span{font-size:10px;color:#C84B2F;font-weight:600}
+.sm-items{flex:1;padding:6px 0;overflow-y:auto}
+.sm-row{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;transition:background .15s}
+.sm-row:active{background:rgba(245,239,230,.06)}
+.sm-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sm-info{display:flex;flex-direction:column}
+.sm-title{font-size:13px;font-weight:500;color:#F5EFE6}
+.sm-sub{font-size:10px;color:rgba(245,239,230,.35);margin-top:1px}
+.sm-sep{height:1px;background:rgba(245,239,230,.07);margin:4px 18px}
+.sm-foot{padding:12px 18px;border-top:1px solid rgba(245,239,230,.08)}
+.sm-logout{display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer}
+.sm-logout .sm-title{color:#ef4444}
+
+/* Header new style */
+.hdr{display:flex;align-items:center;background:#2C2416;padding:12px 14px}
 </style>
 </style>
 </head>
@@ -776,17 +818,17 @@ setInterval(_patchTX, 100);
 </div>
 <div id="APP" style="display:none" data-ready="1">
 <div class="pg on" id="calPage">
-  <div class="hdr" style="gap:10px"><button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button><div><div style="display:flex;align-items:center;gap:10px">
-  <div style="width:32px;height:32px;background:rgba(200,75,47,.12);border-radius:9px;border:1px solid rgba(200,75,47,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-    <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="11" height="11" rx="3" fill="#C84B2F"/><rect x="18" y="3" width="11" height="11" rx="3" fill="rgba(245,239,230,0.22)"/><rect x="3" y="18" width="11" height="11" rx="3" fill="rgba(245,239,230,0.22)"/><rect x="18" y="18" width="11" height="11" rx="3" fill="#C84B2F"/><rect x="13.5" y="13.5" width="5" height="5" rx="1.5" fill="#C84B2F" opacity=".5"/></svg>
+  <div class="hdr" style="gap:0;justify-content:space-between">
+  <button class="ham-btn" onclick="openSideMenu()" id="nb_ham_hdr" style="flex-shrink:0"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></button>
+  <div style="display:flex;flex-direction:column;flex:1;padding:0 10px">
+    <span id="hdrGreeting" style="font-size:11px;color:rgba(245,239,230,.5);font-weight:400">Сайн байна уу?</span>
+    <span id="hdrName" style="font-size:14px;color:#F5EFE6;font-weight:600;line-height:1.3">Хэрэглэгч</span>
   </div>
-  <div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:rgba(245,239,230,.85);letter-spacing:.04em;line-height:1">АЖЛЫН</div>
-    <h1 id="hCal" style="font-family:'DM Serif Display',serif;font-size:11px;color:#C84B2F;font-weight:400;line-height:1;margin:0;letter-spacing:.03em">хуваарь</h1>
-  </div>
-</div><div class="hsub" id="hCalSub"></div></div>
-    <div class="hr"><button class="cnb" onclick="cm(-1)">←</button><div class="clbl" id="calLbl"></div><button class="cnb" onclick="cm(1)">→</button></div>
-  </div>
+  <button onclick="openNotifChat()" id="bellBtn" style="background:none;border:none;cursor:pointer;position:relative;padding:6px;flex-shrink:0">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+    <span id="bellDot" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#C84B2F;border-radius:50%;border:1.5px solid #2C2416"></span>
+  </button>
+</div>
   <div class="cnt">
     <div id="subBanner"></div><div id="limitBanner"></div>
     <div class="cwrap"><div class="cdow" id="cdow"></div><div class="cdays" id="cdays"></div></div>
@@ -800,7 +842,33 @@ setInterval(_patchTX, 100);
 </div>
 <div class="pg" id="adminPage"><div class="hdr"><div><h1 id="hAdmin">Хэрэглэгчид</h1><div class="hsub" id="hAdminSub">УДИРДЛАГА</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminCnt"></div></div>
 <div class="pg" id="adminSetPage"><div class="hdr"><div><h1 id="hAdminSet">Цэс</h1><div class="hsub" id="hAdminSetSub">СИСТЕМ</div></div><button class="out-btn" onclick="doLogout()">Гарах</button></div><div class="cnt" id="adminSetCnt"></div></div>
-<nav class="bnav" id="mainNav"></nav>
+<nav class="bnav" id="mainNav">
+  <div class="nb-side-btn" onclick="openEmpList()" id="nb_emp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="7" width="20" height="14" rx="2"/>
+      <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+    </svg>
+  </div>
+  <div class="nb-center-wrap">
+    <div class="nb-logo-btn" onclick="showPage('calPage')">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;width:28px;height:28px;position:relative">
+        <div style="border-radius:4px;background:#C84B2F"></div>
+        <div style="border-radius:4px;background:rgba(245,239,230,.2)"></div>
+        <div style="border-radius:4px;background:rgba(245,239,230,.2)"></div>
+        <div style="border-radius:4px;background:#C84B2F"></div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:2px;background:#C84B2F;opacity:.6"></div>
+      </div>
+    </div>
+  </div>
+  <div class="nb-side-btn" onclick="openAddWorker()" id="nb_add">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <line x1="19" y1="8" x2="19" y2="14"/>
+      <line x1="22" y1="11" x2="16" y2="11"/>
+    </svg>
+  </div>
+</nav>
 </div>
 <!-- CHAT -->
 <div class="chat-ovr" id="chatOvr">
@@ -826,12 +894,59 @@ setInterval(_patchTX, 100);
 
 <!-- SIDE MENU -->
 <div class="side-menu-overlay" id="sideOverlay" onclick="closeSideMenu()"></div>
-<div class="side-menu" id="sideMenu">
-  <div class="sm-hdr">
-    <div class="sm-hdr-title" id="smTitle">Цэс</div>
-    <button class="sm-close" onclick="closeSideMenu()">✕</button>
+<!-- New Side Menu -->
+<div class="sm-overlay" id="smOverlay" onclick="closeSideMenu()"></div>
+<div class="sm-drawer" id="sideMenu">
+  <div class="sm-profile">
+    <div class="sm-avatar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C84B2F" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </div>
+    <div class="sm-uname" id="smUserName">Хэрэглэгч</div>
+    <div class="sm-badge"><span id="smPlanBadge">⭐ Туршилт</span></div>
   </div>
-  <div id="smItems"></div>
+  <div class="sm-items">
+    <div class="sm-row" onclick="closeSideMenu();showProfile()">
+      <div class="sm-ic" style="background:rgba(200,75,47,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C84B2F" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div class="sm-info"><div class="sm-title">Профайл</div><div class="sm-sub">Нэр, и-мэйл, утас</div></div>
+    </div>
+    <div class="sm-row" onclick="closeSideMenu();showPlan()">
+      <div class="sm-ic" style="background:rgba(234,179,8,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="1.8" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+      </div>
+      <div class="sm-info"><div class="sm-title">Эрхийн мэдээлэл</div><div class="sm-sub" id="smExpSub">Төлөвлөгөө, дуусах огноо</div></div>
+    </div>
+    <div class="sm-sep"></div>
+    <div class="sm-row" onclick="closeSideMenu();showBackup()">
+      <div class="sm-ic" style="background:rgba(59,130,246,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="sm-info"><div class="sm-title">Өгөгдөл & Backup</div><div class="sm-sub">Экспорт, импорт</div></div>
+    </div>
+    <div class="sm-row" onclick="closeSideMenu();openChat()">
+      <div class="sm-ic" style="background:rgba(34,197,94,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="sm-info"><div class="sm-title">Холбоо барих</div><div class="sm-sub">Админтай чат</div></div>
+    </div>
+    <div class="sm-sep"></div>
+    <div class="sm-row" onclick="closeSideMenu();cycleLang()">
+      <div class="sm-ic" style="background:rgba(245,239,230,.06)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(245,239,230,.7)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+      </div>
+      <div class="sm-info"><div class="sm-title" style="color:rgba(245,239,230,.7)">Хэл солих</div><div class="sm-sub">МН · КР · EN</div></div>
+      <div style="margin-left:auto;background:rgba(245,239,230,.08);border-radius:6px;padding:3px 8px;font-size:11px;color:rgba(245,239,230,.5)" id="smLangBadge">МН</div>
+    </div>
+  </div>
+  <div class="sm-foot">
+    <div class="sm-logout" onclick="closeSideMenu();doLogout()">
+      <div class="sm-ic" style="background:rgba(239,68,68,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </div>
+      <div class="sm-info"><div class="sm-title" style="color:#ef4444">Гарах</div></div>
+    </div>
+  </div>
 </div>
 
 <div class="ovr" id="oAssign"><div class="modal" onclick="event.stopPropagation()">
@@ -1885,6 +2000,89 @@ setTimeout(renameSetNav, 3000);
   var obs = new MutationObserver(function(){ renameSetNav(); });
   obs.observe(nav, {childList:true, subtree:true, characterData:true});
 })();
+
+// ═══ NEW NAV & SIDE MENU ═══
+
+function openSideMenu(){
+  var sm = document.getElementById('sideMenu');
+  var ovl = document.getElementById('smOverlay');
+  if(sm) sm.classList.add('open');
+  if(ovl) ovl.classList.add('open');
+  // Update profile info
+  if(cu && cu.username){
+    var el = document.getElementById('smUserName');
+    if(el) el.textContent = cu.username;
+  }
+  if(cu && cu.exp){
+    var sub = document.getElementById('smExpSub');
+    if(sub){
+      var d = dLeft(cu.exp);
+      sub.textContent = d > 0 ? d + ' өдөр үлдсэн' : 'Дууссан';
+      if(d <= 7) sub.style.color = '#ef4444';
+    }
+  }
+  // Update plan badge
+  var badge = document.getElementById('smPlanBadge');
+  if(badge && cu && cu.plan){
+    var plans = {trial:'⭐ Туршилт', basic:'💼 Үндсэн', pro:'🚀 Про'};
+    badge.textContent = plans[cu.plan] || '⭐ Туршилт';
+  }
+  // Lang badge
+  var lb = document.getElementById('smLangBadge');
+  if(lb) lb.textContent = lang==='kr'?'КР':lang==='en'?'EN':'МН';
+}
+
+function closeSideMenu(){
+  var sm = document.getElementById('sideMenu');
+  var ovl = document.getElementById('smOverlay');
+  if(sm) sm.classList.remove('open');
+  if(ovl) ovl.classList.remove('open');
+}
+
+function showProfile(){
+  // Open settings page profile section
+  if(typeof showPage==='function') showPage('setPage');
+}
+
+function showPlan(){
+  if(typeof showPage==='function') showPage('setPage');
+}
+
+function showBackup(){
+  if(typeof showPage==='function') showPage('setPage');
+}
+
+function openNotifChat(){
+  // Open chat and mark read
+  if(typeof openChat==='function') openChat(cu && cu.uid);
+  var dot = document.getElementById('bellDot');
+  if(dot) dot.style.display = 'none';
+}
+
+// Update header greeting and name
+function updateHeader(){
+  var greeting = document.getElementById('hdrGreeting');
+  var name = document.getElementById('hdrName');
+  if(!greeting || !name) return;
+  var greetings = {mn:'Сайн байна уу?', kr:'안녕하세요!', en:'Hello!'};
+  greeting.textContent = greetings[lang] || greetings.mn;
+  if(cu && cu.username) name.textContent = cu.username;
+}
+setInterval(updateHeader, 1000);
+
+// Bell dot: check unread messages
+function checkBellDot(){
+  var dot = document.getElementById('bellDot');
+  if(!dot || !cu || !cu.uid) return;
+  if(typeof window.fbUnreadCount==='function'){
+    window.fbUnreadCount(cu.uid, false).then(function(n){
+      dot.style.display = n > 0 ? 'block' : 'none';
+    }).catch(function(){});
+  }
+}
+setInterval(checkBellDot, 5000);
+setTimeout(checkBellDot, 2000);
+
 </script>
 </body>
 </html>
