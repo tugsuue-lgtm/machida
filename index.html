@@ -799,7 +799,7 @@ setInterval(_patchTX, 100);
     </div>
     <button onclick="openBellChat()" id="bellBtn" style="background:none;border:none;cursor:pointer;position:relative;padding:6px;flex-shrink:0">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5EFE6" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-      <span id="bellDot" style="display:none;position:absolute;top:3px;right:3px;width:8px;height:8px;background:#C84B2F;border-radius:50%;border:1.5px solid #2C2416"></span>
+      <span id="bellDot" style="display:none;position:absolute;top:0;right:0;min-width:17px;height:17px;background:#C84B2F;color:#fff;border-radius:9px;border:1.5px solid #2C2416;font-size:10px;font-weight:700;padding:0 3px;align-items:center;justify-content:center"></span>
     </button>
   </div>
   <h1 id="hCal" style="display:none"></h1><div class="hsub" id="hCalSub" style="display:none"></div>
@@ -1059,7 +1059,9 @@ window.fbListenMsgs = function(userId, cb) {
 window.fbUnreadCount = async function(userId, countAdmin) {
   try {
     const snap = await getDocs(collection(fbDb,"chats",userId,"messages"));
-    return snap.docs.filter(d => !d.data().read && (countAdmin ? d.data().fromAdmin : !d.data().fromAdmin)).length;
+    // countAdmin=true: admin counts UNREAD messages FROM USER (fromAdmin=false)
+    // countAdmin=false: user counts UNREAD messages FROM ADMIN (fromAdmin=true)
+    return snap.docs.filter(d => !d.data().read && (countAdmin ? !d.data().fromAdmin : d.data().fromAdmin)).length;
   } catch(e) { return 0; }
 };
 window.fbMarkRead = async function(userId, isAdmin) {
@@ -1269,6 +1271,7 @@ var a0_0x106990=a0_0x3ce6;(function(_0x9169b8,_0x4087e4){var _0x58dbb9=a0_0x3ce6
       await window.fbLogout();return;
     }
     cu=Object.assign({},profile,{name:profile.username||email.split("@")[0],uid:uid});
+    if(window.fbSaveProfile){window.fbSaveProfile(uid,{lastLogin:Date.now()});}
     var dbData=await window.fbLoadDB(uid);
     db=dbData||{employers:[],workers:[],schedules:{},cards:{}};
     if(!db.cards)db.cards={};
@@ -1687,44 +1690,90 @@ var _adminProfiles = {};
 
 function _renderAdminUI(profiles, query){
   var cnt=document.getElementById('adminCnt');if(!cnt)return;
-  var list=[];
+  window._lastProfiles=profiles; window._lastQuery=query||'';
+  var L=function(mn,kr,en){return lang==='kr'?kr:lang==='en'?en:mn;};
   var q=(query||'').toLowerCase().trim();
+  var filter=window._adminFilter||'all';
+  var sortBy=window._adminSort||'exp';
+  var list=[];
+  var stats={total:0,active:0,expiring:0,expired:0,trial:0};
+
   for(var uid in profiles){
     var u=profiles[uid];
     if(u.role==='admin'||u.username==='admin')continue;
     if(u.deleted===true)continue;
     if(!u.username)u.username=uid;
+    var d=dLeft(u.exp||'2000-01-01');
+    // stats
+    stats.total++;
+    if(u.plan==='trial')stats.trial++;
+    if(d<=0)stats.expired++; else if(d<=7)stats.expiring++; else stats.active++;
+    // search filter
     if(q){
-      var match=(u.username||'').toLowerCase().includes(q)||
-                (u.email||'').toLowerCase().includes(q)||
-                (u.phone||'').includes(q);
+      var match=(u.username||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.phone||'').includes(q);
       if(!match)continue;
     }
-    list.push({uid:uid,name:u.username,u:u,d:dLeft(u.exp||'2000-01-01')});
+    // category filter
+    if(filter==='active'&&!(d>7))continue;
+    if(filter==='expiring'&&!(d>0&&d<=7))continue;
+    if(filter==='expired'&&!(d<=0))continue;
+    if(filter==='trial'&&u.plan!=='trial')continue;
+    list.push({uid:uid,name:u.username,u:u,d:d});
   }
-  list.sort(function(a,b){if(a.d<=0&&b.d>0)return -1;if(b.d<=0&&a.d>0)return 1;return a.d-b.d});
+  // sort
+  if(sortBy==='exp'){
+    list.sort(function(a,b){if(a.d<=0&&b.d>0)return -1;if(b.d<=0&&a.d>0)return 1;return a.d-b.d;});
+  } else if(sortBy==='name'){
+    list.sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
+  } else if(sortBy==='recent'){
+    list.sort(function(a,b){return (b.u.lastLogin||0)-(a.u.lastLogin||0);});
+  }
 
   var h='';
+  // Stats summary cards
+  h+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'
+    +'<div style="flex:1;min-width:70px;background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:var(--txt)">'+stats.total+'</div><div style="font-size:10px;color:var(--mut)">'+L("Нийт","전체","Total")+'</div></div>'
+    +'<div style="flex:1;min-width:70px;background:var(--sur);border:1px solid var(--bdr);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:700;color:#16a34a">'+stats.active+'</div><div style="font-size:10px;color:var(--mut)">'+L("Идэвхтэй","활성","Active")+'</div></div>'
+    +'<div style="flex:1;min-width:70px;background:'+(stats.expiring>0?"rgba(234,179,8,.12)":"var(--sur)")+';border:1px solid '+(stats.expiring>0?"#eab308":"var(--bdr)")+';border-radius:10px;padding:10px;text-align:center;cursor:pointer" onclick="_setAdminFilter(\'expiring\')"><div style="font-size:20px;font-weight:700;color:#eab308">'+stats.expiring+'</div><div style="font-size:10px;color:var(--mut)">'+L("Дуусах нь","곧 만료","Expiring")+'</div></div>'
+    +'<div style="flex:1;min-width:70px;background:'+(stats.expired>0?"rgba(220,38,38,.1)":"var(--sur)")+';border:1px solid '+(stats.expired>0?"#dc2626":"var(--bdr)")+';border-radius:10px;padding:10px;text-align:center;cursor:pointer" onclick="_setAdminFilter(\'expired\')"><div style="font-size:20px;font-weight:700;color:#dc2626">'+stats.expired+'</div><div style="font-size:10px;color:var(--mut)">'+L("Дууссан","만료","Expired")+'</div></div>'
+    +'</div>';
+
   h+='<div class="ss">'
     +'<div class="sh"><div class="sht">👥 '+T("usersT")+' <span style="font-size:11px;color:var(--mut)">('+list.length+')</span></div>'
     +'<button class="btn br bs" id="btnAdmAdd" onclick="openAdmUser()">'+T("addItem")+'</button>'
     +'</div>'
     +'<div class="admin-search">'
-    +'<input type="text" id="adminSearch" placeholder="'+(lang==="kr"?"이름, 이메일, 전화번호...":lang==="en"?"Search name, email, phone...":"Нэр, и-мэйл, утас хайх...")+'" '
-    +'oninput="_filterAdmin(this.value)" value="'+(q||'')+'">'
-    +'<span class="search-count">'+list.length+(lang==="kr"?"명":lang==="en"?" users":" хэр")+'</span>'
+    +'<input type="text" id="adminSearch" placeholder="'+(lang==="kr"?"이름, 이메일, 전화번호...":lang==="en"?"Search name, email, phone...":"Нэр, и-мэйл, утас хайх...")+'" oninput="_filterAdmin(this.value)" value="'+(q||'')+'">'
     +'</div>';
+
+  // Filter chips
+  var chips=[['all',L("Бүгд","전체","All")],['active',L("Идэвхтэй","활성","Active")],['expiring',L("Дуусах","만료 예정","Expiring")],['expired',L("Дууссан","만료","Expired")],['trial',L("Туршилт","체험","Trial")]];
+  h+='<div style="display:flex;gap:6px;padding:8px 12px;overflow-x:auto;border-bottom:1px solid var(--bdr)">';
+  for(var ci=0;ci<chips.length;ci++){
+    var active=filter===chips[ci][0];
+    h+='<button onclick="_setAdminFilter(\''+chips[ci][0]+'\')" style="flex-shrink:0;padding:5px 12px;border-radius:14px;border:1px solid '+(active?"#C84B2F":"var(--bdr)")+';background:'+(active?"#C84B2F":"transparent")+';color:'+(active?"#fff":"var(--txt)")+';font-size:12px;font-weight:500;cursor:pointer">'+chips[ci][1]+'</button>';
+  }
+  // Sort dropdown
+  h+='<select onchange="_setAdminSort(this.value)" style="flex-shrink:0;margin-left:auto;padding:5px 8px;border-radius:8px;border:1px solid var(--bdr);background:var(--sur);color:var(--txt);font-size:12px;cursor:pointer">'
+    +'<option value="exp"'+(sortBy==="exp"?" selected":"")+'>'+L("Хугацаагаар","만료순","By expiry")+'</option>'
+    +'<option value="name"'+(sortBy==="name"?" selected":"")+'>'+L("Нэрээр","이름순","By name")+'</option>'
+    +'<option value="recent"'+(sortBy==="recent"?" selected":"")+'>'+L("Сүүлд орсон","최근 접속","Recent")+'</option>'
+    +'</select>';
+  h+='</div>';
+
   if(!list.length){
-    h+='<div class="el">'+(q?(lang==="kr"?"검색 결과 없음":lang==="en"?"No results":"Олдсонгүй"):"-")+'</div>';
+    h+='<div class="el">'+(q?L("Олдсонгүй","검색 결과 없음","No results"):L("Хоосон","없음","Empty"))+'</div>';
   } else {
     for(var i=0;i<list.length;i++){
       var item=list[i],u=item.u,d=item.d;
       var bc=u.plan==="trial"?"ab-trial":d>7?"ab-ok":d>0?"ab-warn":"ab-exp";
-      var bt=u.plan==="trial"?(lang==="kr"?"체험":lang==="en"?"Trial":"Туршилт"):d>0?d+" "+T("day"):T("subExp");
+      var bt=u.plan==="trial"?L("Туршилт","체험","Trial"):d>0?d+" "+T("day"):T("subExp");
+      var warnIcon=(d>0&&d<=7)?'<span title="Удахгүй дуусна" style="margin-right:4px">⚠️</span>':(d<=0?'<span style="margin-right:4px">🔴</span>':'');
+      var lastLogin=u.lastLogin?new Date(u.lastLogin).toLocaleDateString():'';
       h+='<div class="au-row">'
         +'<div style="flex:1">'
-        +'<div class="au-name">'+esc(item.name)+'</div>'
-        +'<div class="au-det">'+esc(u.email||"-")+(u.phone?" · 📞"+esc(u.phone):"")+" · "+esc(u.exp||"-")+'</div>'
+        +'<div class="au-name">'+warnIcon+esc(item.name)+'</div>'
+        +'<div class="au-det">'+esc(u.email||"-")+(u.phone?" · 📞"+esc(u.phone):"")+" · "+esc(u.exp||"-")+(lastLogin?' · 🕐'+lastLogin:'')+'</div>'
         +'</div>'
         +'<span class="au-badge '+bc+'">'+bt+'</span>'
         +'<div style="display:flex;gap:4px">'
@@ -1740,8 +1789,18 @@ function _renderAdminUI(profiles, query){
   if(q){var si=document.getElementById('adminSearch');if(si){si.focus();si.setSelectionRange(si.value.length,si.value.length);}}
 }
 
+function _setAdminFilter(f){
+  window._adminFilter = (window._adminFilter===f && f!=='all') ? 'all' : f;
+  if(window._lastProfiles) _renderAdminUI(window._lastProfiles, window._lastQuery||'');
+}
+function _setAdminSort(s){
+  window._adminSort = s;
+  if(window._lastProfiles) _renderAdminUI(window._lastProfiles, window._lastQuery||'');
+}
+
 function _filterAdmin(q){
-  _renderAdminUI(_adminProfiles, q);
+  window._lastQuery=q;
+  _renderAdminUI(window._lastProfiles||_adminProfiles, q);
 }
 
 // Use MutationObserver on adminCnt to intercept and replace obfuscated render
@@ -2116,7 +2175,14 @@ function checkBellDot(){
   if(!dot || !cu || !cu.uid) return;
   if(typeof window.fbUnreadCount==='function'){
     window.fbUnreadCount(cu.uid, false).then(function(n){
-      dot.style.display = n>0 ? 'block' : 'none';
+      if(n>0){
+        dot.textContent = n>9 ? '9+' : n;
+        dot.style.display = 'flex';
+        dot.style.alignItems = 'center';
+        dot.style.justifyContent = 'center';
+      } else {
+        dot.style.display = 'none';
+      }
     }).catch(function(){});
   }
 }
@@ -2153,6 +2219,7 @@ setTimeout(checkBellDot, 2500);
         if(!profile){ return; } // no profile, stay on login
         if(profile.active === false){ return; } // disabled
         cu = Object.assign({}, profile, {name: profile.username || email.split("@")[0], uid: uid});
+        if(window.fbSaveProfile){window.fbSaveProfile(uid,{lastLogin:Date.now()});}
       }
 
       return window.fbLoadDB(uid);
@@ -2228,6 +2295,60 @@ function scrollToUnread(){
 // Poll for admin unread every 5 seconds
 setInterval(updateAdminUnread, 5000);
 setTimeout(updateAdminUnread, 2000);
+
+
+// ═══ ADMIN FULL BACKUP ═══
+function adminFullBackup(){
+  if(typeof isAdmin==='function' && !isAdmin()) return;
+  var L=function(mn,kr,en){return lang==='kr'?kr:lang==='en'?en:mn;};
+  var btn=document.getElementById('fullBackupBtn');
+  if(btn){btn.textContent=L('Бэлдэж байна...','준비 중...','Preparing...');btn.disabled=true;}
+
+  window.fbLoadAllProfiles().then(function(profiles){
+    var backup={version:1,date:new Date().toISOString(),profiles:profiles,userData:{}};
+    var uids=Object.keys(profiles||{});
+    var pending=uids.length;
+    if(pending===0){ _downloadBackup(backup); return; }
+    uids.forEach(function(uid){
+      window.fbLoadDB(uid).then(function(db){
+        backup.userData[uid]=db||{};
+        pending--;
+        if(pending<=0) _downloadBackup(backup);
+      }).catch(function(){ pending--; if(pending<=0) _downloadBackup(backup); });
+    });
+  }).catch(function(e){
+    alert('Backup error: '+e.message);
+    if(btn){btn.disabled=false;}
+  });
+}
+
+function _downloadBackup(backup){
+  var L=function(mn,kr,en){return lang==='kr'?kr:lang==='en'?en:mn;};
+  var blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='machida-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  var btn=document.getElementById('fullBackupBtn');
+  if(btn){btn.textContent=L('✓ Татагдлаа','✓ 완료','✓ Done');btn.disabled=false;
+    setTimeout(function(){btn.textContent=L('📦 Бүх өгөгдөл татах','📦 전체 백업','📦 Full backup');},2000);}
+}
+
+// Add backup button to admin page (after admin content loads)
+function _injectAdminBackup(){
+  if(typeof isAdmin==='function' && !isAdmin()) return;
+  var cnt=document.getElementById('adminCnt');
+  if(!cnt || document.getElementById('fullBackupBtn')) return;
+  var L=function(mn,kr,en){return lang==='kr'?kr:lang==='en'?en:mn;};
+  var bar=document.createElement('div');
+  bar.style.cssText='margin-top:14px;padding:14px;background:var(--sur);border:1px solid var(--bdr);border-radius:12px';
+  bar.innerHTML='<div style="font-size:12px;color:var(--mut);margin-bottom:8px">'+L('Бүх хэрэглэгчийн өгөгдлийг JSON файлд хадгална','모든 사용자 데이터를 JSON으로 저장','Save all user data to JSON')+'</div>'
+    +'<button id="fullBackupBtn" onclick="adminFullBackup()" style="width:100%;padding:11px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:13px;font-weight:600;cursor:pointer">📦 '+L('Бүх өгөгдөл татах','전체 백업','Full backup')+'</button>';
+  cnt.appendChild(bar);
+}
+setInterval(_injectAdminBackup, 1500);
 </script>
 </body>
 </html>
